@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입</title>
+</head>
+<body>
+    <form>
+    <fieldset>
+        <legend>회원가입 동의서</legend>
+        이용약관 동의(필수) <br>
+        <textarea style="resize:none">어쩌구저쩌구</textarea> <br>
+        <input type="radio" name="agree1" required> 동의합니다.
+        <input type="radio" name="agree1"> 동의하지않습니다.
+        <br><br>
+        개인정보 수집 및 이용 동의(필수) <br>
+        <textarea style="resize:none">어쩔씨구</textarea> <br>
+        <input type="radio" name="agree2" required> 동의합니다.
+        <input type="radio" name="agree2"> 동의하지않습니다.
+        <br><br>
+        <input type="checkbox" required> 모두 동의합니다.
+        <br><br>
+        <input type="submit" value="취소">
+        <input type="submit" value="확인">
+    </fieldset>
+    </form>
+    <form>
+    <fieldset>
+        <legend>회원가입 양식</legend>
+        * 아이디 <br>
+        <input type="search" name="id" minlength="5" maxlength="20"
+        placeholder="영문 소문자, 숫자, 특수기호(_, -) 5~20" required>
+        <input type="submit" value="아이디 중복 확인">
+        <br><br>
+        * 비밀번호 <br>
+        <input type="password" name="pwd" minlength="8" maxlength="15"
+        placeholder="영문, 숫자, 특수문자 8~15" required>
+        <br><br>
+        * 비밀번호 재확인 <br>
+        <input type="password" name="pwd-confirm" minlength="8" maxlength="15"
+        placeholder="영문, 숫자, 특수문자 8~15" required>
+        <br><br>
+        * 이름 <br>
+        <input type="text" name="name" required>
+        <br><br>
+        * 주민등록번호 <br>
+        <input type="text" name="ssn-front" pattern="\d{6}" required> -
+        <input type="text" name="ssn-back" pattern="\d{7}" required>
+        <br><br>
+        * 성별 <br>
+        <input type="radio" name="gender" value="x" checked> 선택안함
+        <input type="radio" name="gender" value="m"> 남자
+        <input type="radio" name="gender" value="f"> 여자
+        <br><br>
+        * 생년월일
+        <input type="date" name="birth" required>
+        <br><br>
+        주소 <br>
+        <input type="text" name="address">
+        <br><br>
+        우편번호 <br>
+        <input type="search" name="postcode">
+        <input type="submit" value="우편번호찾기">
+        <input type="checkbox" name="mail-agree"> 우편 수신 동의
+        <br><br>
+        이메일 <br>
+        <input type="email" name="email">
+        <input type="checkbox" name="email-agree"> 이메일 수신 동의
+        <br><br>
+        휴대폰번호 <br>
+        <select name="phone1">
+            <option>010</option>
+            <option>070</option>
+            <option>02</option>
+        </select> -
+        <input type="text" name="phone2" pattern="\d{4}"> -
+        <input type="text" name="phone3" pattern="\d{4}">
+        <input type="checkbox" name="msg-agree"> 문자 수신 동의
+        <br><br>
+        <input type="submit" value="초기화">
+        <input type="submit" value="가입하기">
+    </fieldset>
+    </form>
+</body>
+</html>
