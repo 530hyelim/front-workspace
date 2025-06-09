@@ -1,0 +1,68 @@
+/*
+    일반 구조 선택자
+    * first-child : 형제관계의 요소 중 첫 번째 요소를 선택
+    * last-child : 형제관계의 요소 중 마지막 요소를 선택
+    * nth-child(수열) : 형제관계의 요소 중 지정된 "수열"번째 요소를
+      모두 선택하는 선택자
+*/
+#test1 > :first-child { /* p태그 안써줘도 되긴 함 */
+    background-color: red;
+    color: white;
+}
+
+#test1 > p:last-child {
+    background-color: orange;
+    /* #test1의 자식 중 마지막 요소는 pre태그이기 때문에 선택 불가 */
+}
+
+#test1 > pre:last-child {
+    background-color: yellow;
+}
+
+#test1 > p:nth-child(2) {
+    background-color: orange;
+}
+
+#test1 > p:nth-child(4) {
+    background-color: yellowgreen;
+}
+
+/* 홀수 번째 형제요소 */
+#test1 > p:nth-child(2n-1) { /* odd */
+    background-color: skyblue;
+}
+
+/* 짝수 번째 형제요소 */
+#test1 > p:nth-child(2n) { /* even */
+    border: 1px solid black;
+}
+
+#test1 > p:nth-child(n+3) {
+    color: red;
+}
+
+/*
+    형태 구조 선택자
+    :first-of-type : 같이 선택된 형제들 기준 첫 번째 요소
+    :last-of-type : 함께 선택된 형제 요소 기준 마지막 요소
+*/
+#test2 > :first-of-type {
+    background-color: orange;
+} /* 태그 생략 시 두 개의 태그 요소들 중 각각 첫번째 요소들 선택 */
+
+#test2 > p:last-of-type {
+    background-color: skyblue;
+}
+
+#test2 > p:nth-of-type(odd) {
+    font-size: 30px;
+}
+
+#test2 > p:nth-last-of-type(2) {
+    background-color: pink;
+}
+
+/* 부정선택자 :not(선택자) */
+#test3 > li:not(li:nth-of-type(3n)) {
+    background-color: pink;
+}
