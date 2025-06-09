@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>실습문제2</title>
+</head>
+<body>
+    <h1>KH 게시판 - 실습문제</h1>
+    <hr>
+    <h3>메뉴</h3>
+    학습내용 클릭 시 작성한 html 페이지로 이동되도록 구현한다.
+    <ol type="A">
+        <li>Home</li>
+        <li><b>KH 게시판</b></li>
+        <li>학습내용</li>
+        <ol type="I" reversed>
+            <li><a href="07_하이퍼링크관련태그.html">하이퍼링크 관련 태그</a></li>
+            <li><a href="06_영역관련태그.html">영역 관련태그</a></li>
+            <li><a href="05_입력양식및폼관련태그.html">입력양식 및 폼 관련태그</a></li>
+            <li><a href="04_이미지와멀티미디어.html">이미지 및 멀티미디어 관련태그</a></li>
+            <li><a href="03_표관련태그.html">표 관련태그</a></li>
+            <li><a href="02_목록관련태그.html">목록 관련태그</a></li>
+            <li><a href="01_글자관련태그.html">글자 관련태그</a></li>
+        </ol>
+    </ol>
+    <hr>
+    <h2>KH 게시판</h2>
+    4번 게시글 제목 클릭 시 4번 게시글 내용으로 이동 되도록 구현한다.
+    <br><br>
+    등록하기 버튼 클릭 시 게시글 등록으로 이동하도록 구현한다.
+    <table border="1">
+        <thead>
+            <tr>
+                <th>번호</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>조회수</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>오늘부터 다이어트 1일차 들어갑니다</td>
+                <td>mkm</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>html 재밌죠?</td>
+                <td>mkm</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>새해목표 : sqld & 정처기 따기</td>
+                <td>조용우</td>
+                <td>10</td>
+            </tr>
+            <tr>
+                <td><b>4</b></td>
+                <td><a href="#board4">아,, html 재미없다</a></td>
+                <td><b>임세윤</b></td>
+                <td><b>100</b></td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>놀란치킨 또먹고싶네</td>
+                <td>mkm</td>
+                <td>1</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4">
+                    <a href="#insertBoard"><button type="button">등록</button></a>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+    <hr>
+    <h2 id="board4">4번 게시글 내용</h2>
+    행 병합, 열 병합을 적절히 활용하여 아래 테이블데이터를 만든다
+    <table border="1">
+        <tr>
+            <th>번호</th>
+            <td colspan="3">4</td>
+        </tr>
+        <tr>
+            <th>제목</th>
+            <td colspan="3">아,, html 재미없다</td>
+        </tr>
+        <tr>
+            <th>작성자</th>
+            <td>임세윤</td>
+            <th>조회수</th>
+            <td>100</td>
+        </tr>
+        <tr>
+            <th rowspan="2">내용</th>
+            <td rowspan="2" colspan="2">html <del>노잼</del></td>
+            <th>첨부 이미지 (200 x 200)</th>
+        </tr>
+        <tr>
+            <td><img src="/resources/image/bono.jpg" width="200" height="200"></td>
+        </tr>
+    </table>
+    <hr>
+    <h2 id="insertBoard">게시글 등록</h2>
+    제목, 내용은 등록 시 반드시 값을 받도록 하고, 값을 전송할 서버의 주소는 insert,
+    전송방식은 post로 설정한다. <br>
+    제목과 내용, 첨부파일은 서버로 전송 시 title, content, upload라는 이름으로 전송한다.
+    <form action="insert" method="post">
+        <fieldset>
+            <legend>게시글 등록</legend>
+            <fieldset>
+                <legend>제목</legend>
+                <input type="text" name="title" required>
+            </fieldset>
+            <fieldset>
+                <legend>내용</legend>
+                <textarea name="text" required></textarea>
+            </fieldset>
+            <fieldset>
+                <legend>첨부파일</legend>
+                <input type="file" name="upload" required>
+            </fieldset>
+            <input type="submit" value="등록하기">
+        </fieldset>
+    </form>
+    C 2024 KH
+</body>
+</html>

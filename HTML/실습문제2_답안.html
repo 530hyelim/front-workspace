@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HTML 종합 실습문제</title>
+</head>
+<body>
+ 
+    <div>
+        <h1>KH 게시판 - 실습문제</h1>                
+    </div>
+
+    <hr> 
+
+    <div>
+        <div>
+            <h3>메뉴</h3>
+            <p>
+                학습내용 클릭시 작성한 html페이지로 이동되도록 구현한다.
+            </p>
+            <ol type="A">
+                <li>Home</li>
+                <li><b>KH 게시판</b></li>
+                <li>학습내용
+                    <ol type="I" start="7" reversed>
+                        <li><a href="7_하이퍼링크관련태그.html">하이퍼링크 관련태그</a></li>
+                        <li><a href="6_영역관련태그.html">영역 관련태그</a></li>
+                        <li><a href="5_입력양식및폼관련태그.html">입렵양식 및 폼 관련태그</a></li>
+                        <li><a href="4_이미지및멀티미디어관련태그.html">이미지 및 멀티미디어 관련태그</a></li>
+                        <li><a href="3_표관련태그.html">표 관련태그</a></li>
+                        <li><a href="2_목록관련태그.html">목록 관련태그</a></li>
+                        <li><a href="1_글자관련태그.html">글자 관련태그</a></li>
+                    </ol>
+                </li>
+                
+            </ul>
+        </div>
+
+        <hr> 
+
+        <div>
+            <h2>KH 게시판</h2>
+            <p>4번 게시글 제목 클릭시 4번 게시글 내용으로 이동 되도록 구현한다.</p>
+            <p>등록하기 버튼 클릭시 게시글 등록으로 이동하도록 구현한다.</p>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th width="50">번호</td>
+                        <th width="300">제목</td>
+                        <th width="200">작성자</td>
+                        <th width="50">조회수</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>오늘부터 다이어트 1일차 들어갑니다</td>
+                        <td>mkm</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>html 재밌죠?</td>
+                        <td>mkm</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>새해목표 : sqld & 정처기 따기</td>
+                        <td>조용우</td>
+                        <td>10</td>
+                    </tr>
+                    <tr>
+                        <td><b>4</b></td>
+                        <td><b><a href="#board">아,, html 재미없다</a></b></td>
+                        <td><b>임세윤</b></td>
+                        <td><b>100</b></td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>놀란치킨 또먹고싶네</td>
+                        <td>mkm</td>
+                        <td>1</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <th colspan="4"><a href="#form"><button>등록</button></a></th>
+                </tfoot>
+            </table>
+            
+        </div>
+    </div>
+    <br><br><br><br>
+    <hr> <!-- 구분선 추가 -->
+    <br><br><br><br>
+    <div>
+        <h2 id="board">4번 게시글 내용</h2>
+        <p>행병합, 열병합을 적절히 활용하여 아래 테이블데이터를 만든다</p>
+        <!-- 테이블 상세보기 정보 추가 rowspan과 colspan 활용-->
+        <table border="1">
+            <tr>
+                <th width="100">번호</th>
+                <td colspan="3">4</td>
+            </tr>
+            <tr>
+                <th>제목</th>
+                <td colspan="3">아,, html 재미없다</td>
+            </tr>
+            <tr>
+                <th>작성자</th>
+                <td>임세윤</td>
+                <th>조회수</th>
+                <td>100</td>
+            </tr>
+            <tr>
+                <th rowspan="2">내용</th>
+                <td colspan="2" rowspan="2">
+                    <p>html 공부를 시작했는데 생각보다 어렵고 <del>재미가 없습니다... </del>
+                        재밌게 공부하는 꿀팁 좀 알려주십쇼.       
+                    </p>
+                </td>
+                <th>
+                   첨부 이미지 (200 x 200)
+                </th>                
+            </tr>
+            <tr>
+                <td>
+                    <img src="../resources/image/bono.jpg" width="200" height="200">
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <br><br><br><br>
+    <hr>
+    <br><br><br><br>
+
+    <div>
+        <h2 id="form">게시글 등록</h2>
+        <p>
+            제목, 내용은 등록시 반드시 값을 받도록 하고, 
+            값을 전송할 서버의 주소는 insert, 전송방식은 post로 설정한다.  
+            <br>
+            제목과 내용, 첨부파일은 서버로 전송시 title, contnet, upload라는 이름으로 전송한다.            
+        </p>
+        <form action="insert" method="post">
+            <fieldset>
+                <legend>게시글 등록</legend>
+            <fieldset>
+                <legend>
+                    제목
+                </legend>
+                <input type="text" size="80" name="title" required> <br>
+            </fieldset>
+            <fieldset>
+                <legend>내용</legend>
+                <textarea name="content" id="" cols="72" rows="5" style="resize: none;" required></textarea> <br>
+            </fieldset>    
+            <fieldset>
+                <legend>첨부파일</legend>
+                <input type="file" name="upload" id="" required> 
+            </fieldset>
+                <br>
+                <input type="submit" value="등록하기"> 
+            </fieldset>
+        </form>
+    </div>
+
+    <div>
+        <p>&copy; 2024 KH </p>
+    </div>
+
+</body>
+</html>
