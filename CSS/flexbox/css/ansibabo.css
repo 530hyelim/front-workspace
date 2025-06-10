@@ -1,0 +1,28 @@
+.h {
+    position: relative;
+    width: 100px;
+    height: 90px;
+    background: pink;
+    transform: rotate(-45deg);
+    margin: 50px;
+}
+
+.h::before,
+.h::after {
+    content: "";
+    position: absolute;
+    width: 100px;
+    height: 90px;
+    background: pink;
+    border-radius: 50%;
+}
+
+.h::before {
+    top: -50px;
+    left: 0;
+}
+
+.h::after {
+    left: 50px;
+    top: 0;
+}

@@ -1,0 +1,24 @@
+/* :only-child */
+#test1 > p:only-child {
+    background-color: steelblue;
+} /* test1의 유일한 자식이면서 p태그인 경우 */
+
+/* :only-of-type */
+#test2 > p:only-of-type {
+    background-color: steelblue;
+} /* 같은 p태그들 중에는 유일함 */
+#test2 > pre:only-of-type {
+    background-color: steelblue;
+} /* pre태그가 여러개이므로 유일하지 않음 */
+
+/* :empty */
+#test3 > :empty {
+    height: 30px;
+    background-color: lime;
+}
+
+/* 선택자1, 선택자2, 선택자3, ... */
+#test4-1, #test4-2, div.test4-3 {
+    background-color: yellow;
+    border: 3px solid black;
+}

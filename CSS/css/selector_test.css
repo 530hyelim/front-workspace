@@ -4,9 +4,9 @@ div#container1.highlight {
 }
 
 /* 2 */
-div#container2 {
+div#container2 p {
     color: pink;
-}
+} /* 명시도(depth에 따라 다름. 깊을수록 높음)가 같아서 순서가 중요함 */
 div#container2 > p {
     color: red;
 }
@@ -22,6 +22,10 @@ div#container4 > h1 {
     font-size: 20px;
 }
 div#container4 > .title {
+    color: green;
+    font-size: 20px;
+}
+div#container4 > h1, div#container > .title {
     color: green;
     font-size: 20px;
 }
@@ -54,16 +58,16 @@ ul#container7 > li:nth-of-type(2) {
 }
 
 /* 8 */
-div.container8 > p {
+div.container8 > p:only-of-type {
     color: blue;
-}
+} /* :only-child = container8의 p태그 딱 하나 */
 
 /* 9 */
-div#container9 > p[title*=important]:not([title*=not-important]) {
+div#container9 > p[title*=important]:not(p[title*=not-important]) {
     background-color: red;
 }
 
 /* 10 */
-ul#menu > .active {
+ul#menu > li.active {
     color: red;
 }
