@@ -1,3 +1,4 @@
+<!--
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,5 +9,57 @@
 </head>
 <body>
     <div class="h"></div>
+</body>
+</html>
+-->
+<!--
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/ansibabo.css">
+</head>
+<body>
+    </head>
+<body>
+  <div class="background">
+    <div class="column">떨<br>어<br>진<br>다<br>~</div>
+    <div class="column">성<br>겸<br>이<br>도</div>
+    <div class="column">떨<br>어<br>진<br>다</div>
+  </div>
+</body>
+</html>
+</body>
+</html>
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Rotating Star</title>
+  <style>
+    .star {
+      width: 150px;
+      height: 150px;
+      background: gold;
+      clip-path: polygon(
+        50% 0%, 61% 35%, 98% 35%,
+        68% 57%, 79% 91%, 50% 70%,
+        21% 91%, 32% 57%, 2% 35%,
+        39% 35%
+      );
+      animation: rotate 3s linear infinite;
+      margin: 100px auto;
+    }
+    @keyframes rotate {
+      0%   { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="star"></div>
 </body>
 </html>

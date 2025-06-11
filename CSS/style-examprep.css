@@ -1,0 +1,72 @@
+/* 헤더 */
+.header {
+    background-color: blue;
+    color: white;
+    text-align: center;
+    padding-top: 1px;
+}
+.header [type=search] {
+    width: 50%;
+}
+.header [type=submit] {
+    background-color: darkgrey;
+    margin: 10px;
+}
+/* 메인바디 */
+.mainContent {
+    display: flex;
+    text-align: center;
+}
+.list {
+    width: 80%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.list > h3 {
+    width: 100%;
+}
+.books {
+    border: 1px solid grey;
+    width: 20%;
+    height: 300px;
+    margin: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+}
+.cart {
+    width: 20%;
+    border: 1px solid grey;
+    margin: 1%;
+}
+/* 북 내부요소 */
+img {
+    width: 90%;
+    height: 60%;
+    margin: 5%;
+    position: absolute;
+}
+span {
+    width: 90%;
+    margin: 5%;
+    position: absolute;
+    bottom: 30px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.books button {
+    width: 100%;
+    position: absolute;
+    bottom: 10px;
+}
+/* 푸터 */
+.footer {
+    background-color: dimgray;
+    color: white;
+    text-align: center;
+    height: 50px;
+    line-height: 50px;
+}

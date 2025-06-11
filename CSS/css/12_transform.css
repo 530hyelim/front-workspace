@@ -1,0 +1,105 @@
+img {
+    width: 300px;
+}
+
+/* 2d 변형 */
+.trans-x-2d:hover {
+    transform: translateX(100px);
+}
+
+.trans-y-2d:hover {
+    transform: translateY(100px);
+}
+
+.trans-d-2d:hover {
+    transform: translate(100px, 100px);
+}
+
+.trans-x-scale-2d:hover {
+    transform: scaleX(0.5);
+}
+
+.trans-y-scale-2d:hover {
+    transform: scaleY(0.5);
+}
+
+.trans-scale-2d:hover {
+    transform: scale(2,2);
+}
+
+.trans-rotate:hover {
+    transform: rotate(180deg);
+}
+
+/* 3d 변형 */
+/* 원근법을 적용시키려면 대상과 나 사이에 거리를 미리 지정해주어야 함 */
+.trans-3d:hover {
+    transform: perspective(300px) translate3d(50px, 50px, 100px);
+}
+
+.trans-rotate-x-3d:hover {
+    transform: perspective(300px) rotateX(45deg);
+}
+
+.trans-rotate-y-3d:hover {
+    transform: perspective(300px) rotateY(45deg);
+}
+
+.trans-rotate-z-3d:hover {
+    transform: perspective(300px) rotateZ(45deg);
+}
+
+.trans-rotate-3d:hover {
+    transform: perspective(300px) rotate3d(0.5, 0.5, 0.5, 45deg);
+    /* rotate3d(x, y, z, 회전각도) -> x, y, z는 0 ~ 1 사이의 숫자(벡터 방향) */
+}
+
+/* transition */
+.box {
+    width: 150px;
+    height: 150px;
+    border: 1px solid black;
+    background-color: red;
+    /* 스타일이 변경되는 시간 지정 */
+    /* 여러개 중첩해서 쓸 수 있는데 하나만 쓰면 duration과 같음 */
+    transition: 1s; 
+}
+
+.test1:hover {
+    background-color: yellow;
+}
+
+.test2 {
+    transition-duration: 3s;
+}
+
+.test2:hover {
+    transform: rotate(360deg);
+    background-color: pink;
+    border-radius: 50%;
+}
+
+.test3 {
+    transition-duration: 3s;
+    /* cubic-bezier() */
+    /* ease(기본값), linear, ease-in, ease-out, ease-in-out */
+    transition-timing-function: ease-in-out;
+    /* 처음에 느렸다가 빨라졌다가 다시 느려지는 옵션 */
+}
+
+.test3:hover {
+    background-color: springgreen;
+    transform: rotate(720deg);
+}
+
+.test4 {
+    transition-delay: 1s;
+    transition-property: background-color;
+    /* 기본값: all 
+    일부 트랜지션에만 딜레이를 적용할 수 있음 */
+}
+
+.test4:hover {
+    background-color: yellow;
+    transform: translateX(100px);
+}

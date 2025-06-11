@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Dokdo&family=East+Sea+Dokdo&family=Noto+Sans+KR:wght@100..900&display=swap');
+
+#size-test > li:nth-child(1) {font-size:24px}
+#size-test > li:nth-child(2) {font-size:18px}
+#size-test > li:nth-child(3) {font-size:200%}
+#size-test > li:nth-child(4) {font-size:0.8em}
+
+#size-test > li::marker {
+    font-size: 24px;
+}
+
+#weight-test > li{font-size:34px}
+#weight-test > li:nth-child(1){font-weight:400}
+#weight-test > li:nth-child(2){font-weight:bold} /* ==700 */
+#weight-test > li:nth-child(3){font-weight:900}
+#weight-test > li:nth-child(4){font-weight:bolder} /* 상속받은 굵기보다 좀 더 굵게 */
+#weight-test > li:nth-child(5){font-weight:lighter}
+
+.cls > li {font-size:24px}
+
+#family-test1 > li:nth-child(1) {font-family: '궁서'}
+#family-test1 > li:nth-child(2) {font-family: '서혜림'}
+#family-test1 > li:nth-child(3) {font-family: '서혜림','굴림체','궁서체'}
+
+/* HTML로 link 태그를 이용해 웹폰트 추가 */
+#family-test2 > li:nth-child(1) {
+  font-family: "Dokdo", system-ui;
+  font-size: 50px;
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* import로 웹폰트 추가 */
+#family-test2 > li:nth-child(2) {
+  font-family: "East Sea Dokdo", sans-serif;
+  font-size: 50px;
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* 로컬환경 상의 폰트 가져오기 */
+#family-test2 > li:nth-child(3) {
+  font-family: "Noto Sans KR", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
