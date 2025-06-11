@@ -1,0 +1,66 @@
+/* 기본 설정 */
+body {
+  margin: 0;
+}
+
+.wrapper {  
+  min-height: 100vh;
+  border: 2px solid #333;
+  /* background-color: #1a1a1a; */
+}
+
+/* 헤더와 푸터 */
+.header,
+.footer {
+  background-color: #222;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  border: 2px solid #444;
+}
+
+.content {
+  display: flex;
+}
+
+/* 사이드바 
+   직접 작성해보기
+*/
+.sidebar {
+  flex-shrink: 0;
+  border: 1px solid black;
+}
+
+.menu > span {
+  display: block;
+  border: 1px solid black;
+  margin: 10px;
+  padding: 5px;
+}
+
+/* 메인 게시글 영역 
+*/
+.main {
+  width: 100%;
+  /* content의 flex-item임. 근데? block임 */
+  border: 1px solid black;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
+}
+
+/* 카드 스타일
+  팽창 정도 1  flex-grow: 1; (기본값:0)
+  수축 정도 1  flex-shrink: 1; (기본값)
+  크기 30%     flex-basis: 30%; (점유율)
+*/
+.card {
+  flex: 1 1 30%;
+  min-width: 200px;
+  background-color: #ffffff;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  border: 2px solid #bbb;
+  text-align: center;
+}
