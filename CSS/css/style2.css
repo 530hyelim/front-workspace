@@ -21,6 +21,7 @@ body {
 
 .content {
   display: flex;
+  height: 600px;
 }
 
 /* 사이드바 
@@ -42,11 +43,14 @@ body {
 */
 .main {
   width: 100%;
-  /* content의 flex-item임. 근데? block임 */
+  /* content의 flex-item임. 
+    근데? card의 flex-container임.
+  근데? block임 */
   border: 1px solid black;
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  justify-content: center;
+  align-content: space-between;
   padding: 20px;
 }
 
@@ -56,7 +60,9 @@ body {
   크기 30%     flex-basis: 30%; (점유율)
 */
 .card {
-  flex: 1 1 30%;
+  margin: 10px;
+
+  flex: 0 0 30%;
   min-width: 200px;
   background-color: #ffffff;
   padding: 20px;

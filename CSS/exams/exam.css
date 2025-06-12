@@ -1,0 +1,34 @@
+table, th, td {
+    border: 1px solid black;
+}
+
+th {
+    background-color: orange;
+    color: white;
+}
+
+td {
+    background-color: yellow;
+}
+
+button {
+    width: 100%;
+}
+
+form {
+    width: 50%;
+}
+
+form > input[type=text] {
+    width: 80%;
+}
+
+textarea {
+    width: 80%;
+    height: 200px;
+    resize: none;
+}
+
+form > div {
+    text-align: center;
+}
