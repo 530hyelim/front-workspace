@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>자바스크립트 개요</title>
-    <script src="./js/sample.js"></script>
 </head>
 <body>
     <!--
@@ -49,10 +48,89 @@
             external 방식 : 현재문서 외부에서 별도의 js파일을 생성한 후 가져다가 실행하는 방식
         </li>
     </ol>
+    <button id="btn">콘솔창 출력</button>
+    <script>
+        // 내부방식만으로 요소에 이벤트 부여하기
+        // 어떤 요소에 어떤 이벤트가 발생할지를 정하고, 그 이벤트가 실행될 때의 동작을 정의
+        document.querySelector("#btn").onclick = function() { // 익명함수. 람다식/함수명 작성해도됨
+            // document: 현재 문서의 정보를 가지고 있는 JS의 객체 (최상위: window)
+            // 요소선택 방법 중 하나: querySelector()
+            // ("어떤 요소").어떤 이벤트 = 함수
+            console.log('하이');
+        } 
+        // 자동완성 안뜨는 이유: 쿼리셀렉터 반환형이 엘리먼트임 (다형성)
+        // getElementByID하면 HTML 엘리먼트라 자동완성 뜸
+        // 근데 쿼리셀렉터 하면 css 선택자 다 쓸수있어서 복잡한것도 쓸수있어서 더 많이 씀
+    </script>
+    <h2>2. 자바스크립트의 자료형</h2>
+    <button onclick="dataType();">자료형</button>
+    <script>
+        function dataType() {
+            // 변수 선언 시 사용되는 키워드
+            // 1. var(es5) -> 경우에 따라 이것만 가지고 개발하는 곳도 있음
+            // 2,3. let, const(es6)
+            var i; // undefined(값) var 안쓰면 window.i (윈도우 객체의 필드로 정의됨)
+            console.log(i, typeof(undefined)); // 자료형 또한 undefined
+
+            // 값 대입이 이루어질 때 변수의 타입이 결정된다
+            i = 100;
+            i = 1.23;
+            console.log(i, typeof(i)); // 정수든 실수든 안가리고 number 자료형
+            
+            i = 'js is fun'; // 홀따옴표 쌍따옴표 구분 없음
+            console.log(i, typeof(i)); // 문자타입 X 모두 문자열
+
+            i = true;
+            console.log(i, typeof i); // boolean 자료형
+
+            // 자바스크립트에서는 function도 자료형 (대표적 함수형 프로그래밍 언어)
+            // 으로, 값처럼 취급된다(세미콜론 필요). callable(함수호출 연산자 사용 가능하게됨)
+            i = function(x,y) {
+                return x+y;
+            };
+            console.log(i, typeof i, i(1,2)); // function 자료형
+
+            // 객체 자료형(object)
+            // 배열도 하나의 객체
+            i = [1,2,3,4]; // List<Object>와 비슷한 구조. 타입 달라도 됨
+            console.log(i, typeof i); // typeof는 연산자라서 함수호출연산자() 없이 사용 가능
+
+            i = { // key : value (map<String|Number,Object>형태) 어떤 속성값이든 추가할 수 있음
+                name : '치킨', // 자동으로 쌍따옴표 추가됨. "name"
+                taste : '후라이드',
+                price : 19000
+            };
+            console.log(i, typeof i);
+
+            // null, null
+            i = null;
+            console.log(i, typeof i); // object 자료형
+
+            // 어떻게 i의 자료형을 계속 바꿀 수 있을까? 모든 값들이 주소값으로 저장돼서 주소값 메모리만 쓰나?
+            // 아님. 숫자 문자열 불린은 리터럴로 저장됨.....?????????
+            // 컴파일 언어가 아니기 때문에 미리 저장공간을 확보하지 않아도 되기 때문에 i는 메모리가 없음
+            /*
+                i는 값 자체를 담기보다 "TypeTag + Value(포인터)"를 담는 작은 구조체(8 바이트)를 저장하고, 
+                값이 커지면 힙메모리에 저장하고 포인터로 주소값 불러옴.
+            */
+        }
+    </script>
     <!--
     어디에 둬도 상관없는데 보여지는 화면이 가장 중요하기 때문에 html과 css가 가장 먼저 로딩되게 하기 위해 관례상 
     아랫쪽에 기술. 관리 편의상 head에 쓰기도 함. 함수가 정의되기 전 호출을 더 먼저 할 수 있는 이유: 호이스팅?
+    ????? 호이스팅 된다해도 js파일의 가장 시작부분에서 불리는건데 html에서 어케????????
+
+    HTML 동작 원리
+    1. <body>까지 내려옴 → 버튼 요소 발견 → onclick="abc()"라는 속성을 저장함.
+    2. 하지만 onclick 이벤트 핸들러는 즉시 실행되는 게 아니라 이벤트가 발생했을 때 실행됩니다.
+        즉, 이 시점에서는 abc()가 존재하지 않아도 괜찮아요.
+    3. <script src="main.js">를 만나면 브라우저는 HTML 파싱을 멈추고, main.js 파일을 다운로드 + 실행합니다.
+                !!!!!!!!!! 실행 아님. 그냥 선언식으로 작성된 애들 선언만 하고 평가만 함 !!!!!!!!!!!!
+        이때 abc() 함수가 선언되고 전역 컨텍스트에 등록됨. (호이스팅)
+    4. 이후 HTML 파싱이 끝나고 나면 브라우저는 대기 상태로 있다가 유저가 버튼 클릭 시 abc()를 실행해요.
+        이 시점에서는 이미 함수가 선언돼 있음 → 실행 가능
     -->
+    <script src="./js/sample.js"></script>
     <script>
         // 선언형 함수(작성위치 신경쓰지 않아도 됨)
         function abc() {
