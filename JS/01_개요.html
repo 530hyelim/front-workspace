@@ -72,7 +72,7 @@
             var i; // undefined(값) var 안쓰면 window.i (윈도우 객체의 필드로 정의됨)
             console.log(i, typeof(undefined)); // 자료형 또한 undefined
 
-            // 값 대입이 이루어질 때 변수의 타입이 결정된다
+            // 값 대입이 이루어질 때 변수의 타입이 결정된다 (동적 타입핑)
             i = 100;
             i = 1.23;
             console.log(i, typeof(i)); // 정수든 실수든 안가리고 number 자료형

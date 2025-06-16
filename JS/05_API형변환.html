@@ -167,6 +167,9 @@
         <li></li>
     </ul>
     <script>
+        let a; // 전역변수는 맞는데 window의 속성은 아님. const도 마찬가지
+        // node.js는 브라우저 환경이 아니라서 window 객체가 없음. var도 그냥 전역변수임
+        // 호이스팅 될 때 모든 script의 최상위로 끌어올려져서 다른 script 태그 내에서 window 속성 접근 가능
         function test4() {
             /*
                 #test-rnd 하위의 li 태그에 1~100 사이의 난수를 대입하세요.
@@ -184,6 +187,187 @@
                 }
             }
         }
+    </script>
+    <h1>Date</h1>
+    <input type="button" value="실행" onclick="test5();">
+    <script>
+        function test5() {
+            var now = new Date(); // new 키워도 없어도 에러가 발생하지는 않음
+            // 하지만 생성자를 호출하는 것이 아니라 함수를 호출하는 것이기 때문에
+            // Date 객체가 아닌 문자열을 반환 (typeof Date의 결과는 false)
+            // 즉, Date() == new Date.toString(). 편의성을 위한 설계
+            console.log(now);
+
+            var time1 = new Date(2025, 5, 16); // 월은 0월부터 시작
+            console.log(time1);
+
+            console.log(displayDateTime(now));
+        }
+        // date time format 같은 객체가 없어서 직접 구현해주어야 함
+        var displayDateTime = function(dt) {
+            const year = dt.getFullYear();
+            const month = dt.getMonth() + 1;
+            const date = dt.getDate();
+            return year + "-" + (month < 10 ? "0"+month : month) + "-" + date;
+            // 2025-06-16
+        };
+    </script>
+    <h2>형변환</h2>
+    <input type="button" value="실행" onclick="test6();">
+    <script>
+        const test6 = function() {
+            // 자동형변환
+            console.log(3+7+"7"); // 107
+            console.log(7-"7"); // 0
+            console.log(7*"7"); // 49
+            console.log(7/"7"); // 1
+            console.log(7%"4"); // 3
+
+            console.log(7%"a"); // NaN : Not a Number (typeof Nan: Number)
+            // 파싱 불가능한 문자를 숫자로 형변환시 반환되는 값
+            // 난과 다른 숫자들과의 연산은 항상 난이다 (db의 널과 작동방식이 비슷)
+            console.log(7+true); // 8
+            console.log(7+false); // 7
+
+            console.log([] + 1); // "" + 1 => "1" (자료형 String임)
+            console.log([].toString()); // 빈문자열
+            /*
+                [] + 1 => [].toString() + 1 => '' + 1 => '1'
+                더하기에서는 숫자보다 문자가 더 우선순위를 가짐
+                "7"+true => "7true"
+            */
+            console.log({} + 1); // [object Object]1
+            // {}.toString() -> 문자열 + 1 ->
+            // 문자열 + "1" => 문자열1
+            // 객체 내부의 값들을 toString 메서드로 전부 보여줄 수 없기 때문에 (나름대로의 캡슐화)
+            function fn(){}
+            console.log(fn + 1); // function fn(){}f
+            // function에도 나름대로의 toString 메서드가 구현되어 있음
+        }
+    </script>
+    <h2>Number | parseInt | parseFloat</h2>
+    <!-- 산술연산시 자동형변환에 사용되는 메서드 : Number -->
+    <input type="button" value="실행" onclick="test7();">
+    <script>
+        const test7 = function() {
+            let num = "1234.567";
+            console.log(Number(num)); // 1234.567
+            console.log(Number("1234.567원")); // NaN
+            // 변환 불가능한 문자열인 경우 NaN 리턴
+            console.log(parseInt(num)); // 1234
+            console.log(parseInt("12!34.567")); // 12
+            // 변환 가능한 범위까지 변환
+            console.log(parseFloat(num)); // 1234.567
+            // 변환 가능한 실수범위까지 변환
+        };
+    </script>
+    <h2>NaN | Infinity (값을 0으로 나누었을 때 반환되는 값)</h2>
+    <input type="button" value="실행" onclick="test8();">
+    <script>
+        const test8 = function() {
+            console.log(10 / 0); // arithmetic exception X Infinity O
+            console.log(-10 / 0); // -Infinity (typeof Infinity : Number)
+            // 정확히는 넘버 자료형을 상속받은 또 다른 타입이긴 하다.
+            console.log(10 / 0 == Infinity); // true
+            console.log(10 / "a" == NaN); // false
+            console.log(isNaN(10 / "A")); // true
+            // 난은 기타 연산과 마찬가지로 동등비교 연산도 난을 반환하기 때문에 다른방식으로 난을 검사해야 함
+            // 산술 연산결과가 NaN인지 아닌지 확인할 때 사용하는 메서드 : isNaN (isInfinity도 있긴한데 굳이?)
+        };
+    </script>
+    <h2>논리형 형변환</h2>
+    <input type="button" value="실행" onclick="test9();">
+    <script>
+        const test9 = function() {
+            /*
+                자바스크립트는 변수, 리터럴을 boolean형으로 형변환이 가능
+                값이 존재하지 않는 것(falsy 한 값)은 false로 치환
+                 - 0, -0, 0.0, "", '', undefined, null, NaN
+                값이 존재하는 것(trusy 한 값)은 true로 치환
+                 - 123, 123.123, "하이", new Date(), [], {}
+                 - new Object() 또는 new Array()의 객체생성문구를 축약시킨 것이기 때문에
+                if(값), 삼항연산자 등에서 형변환이 일어남
+                 - if(변수 == "") 할 필요 없고 if(변수) 이렇게 쓰면 됨
+                Boolean(값); 불린 형 변환 연산자
+            */
+            console.log(Boolean(123)); // true
+            console.log(Boolean(-123)); // true
+            console.log(Boolean(3.14)); // true
+            console.log(Boolean("ABCDE")); // true
+            console.log(Boolean(new Date())); // true
+            console.log(Boolean([])); // new Array() => true (주소값이 생성되어 있기 때문)
+            console.log(Boolean({})); // new Object() => true
+
+            console.log(Boolean(0)); // false
+            console.log(Boolean("")); // false
+            console.log(Boolean(undefined)); // 변수 선언하고 값을 초기화하지 않았을 때 => false
+            console.log(Boolean(null)); // 할당된 주소값이 없는 상태 => false
+            console.log(Boolean(NaN)); // false
+
+            var obj; // undefined == false
+            obj = null; 
+            obj = "";
+            if(obj) {
+                console.log("obj에 값이 있다");
+            } else {
+                console.log("obj에 값이 없다");
+            }
+            console.log("0" == 0); // true
+            // 동등비교 연산자 기준으로 왼쪽과 오른쪽의 자료형이 다르기 때문에 형변환
+            // "0" == 0
+            // Number("0") == 0
+            // 0 == 0
+            console.log([] == 0); // true
+            // [] == 0
+            // [].toString() == 0
+            // '' == 0
+            // Number('') == 0
+            // 0 == 0
+            console.log([] == "0"); // false
+            // [].toString() == "0"
+            // '' == "0"
+            // false
+            // 동등비교 연산 시 자동형변환되기 때문에 발생하는 문제점 (A==B, B==C, A!=C)
+        };
+    </script>
+    <h2>엄격비교 연산자</h2>
+    <input type="button" value="실행" onclick="test10();">
+    <script>
+        /*
+            일반 동등비교 연산자
+             - 자료형이 다른 경우, "자동 형변환" 후 동등비교 수행(==, !=)
+            엄격 동등비교 연산자
+             - 값, 타입을 모두 검사하는 연산자, 값은 같으나 타입이 다른 경우 즉시 false 반환(===, !==)
+        */
+        const test10 = function() {
+            console.log(3 == "3"); // true
+            console.log(3 != "3"); // false
+            console.log(3 === "3"); // false
+            console.log(3 === 3); // true
+            console.log(3 !== "3"); // true
+            console.log(null == undefined); // false == false : true
+            console.log(null === undefined); // false (Object vs Undefined)
+        };
+    </script>
+    <h2>짧은 조건문</h2>
+    <input type="button" value="실행" onclick="test11();">
+    <script>
+        const test11 = function() {
+            let num = 10;
+            /*
+            if(num % 2 === 0) {
+                console.log("짝수");
+            } else {
+                console.log("홀수");
+            }
+            */
+            // 짧은 조건문
+            // 조건식A || 조건식B
+            // 조건식A && 조건식B(실행할 코드 기술 가능)
+            // 마지막으로 실행한 값을 반환. 불린자료형을 리턴하지 않더라도 자동으로 논리형변환 일어나기 때문
+            num % 2 == 0 && console.log("짝수");
+            num % 2 != 0 && console.log("홀수");
+        };
     </script>
 </body>
 </html>

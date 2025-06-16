@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Array</title>
+</head>
+<body>
+    <h1>Array</h1>
+    <h2>배열생성</h2>
+    <input type="button" value="생성" onclick="test1();">
+    <input type="button" value="초기화" onclick="test2();">
+    <script>
+        function test1() {
+            // javascript의 배열은 크기제한 X, 타입제한 X
+            // java의 ArrayList<Object>와 가장 비슷
+            const arr1 = []; // 주소값은 그대로(새로운 배열 객체 재할당만 아니면 됨)
+            const arr2 = new Array();
+            const arr3 = new Array(3); // 지정하더라도 변경가능해서 굳이임
+            console.log(arr1, arr2, arr3);
+            const arr = Array();
+            // Array()는 Date()와 다르게 생성자 함수로 설계되어 있기 때문에
+            // new 키워드를 생략해도 내부적으로 new Array()를 호출한 것과 같음
+            // Object()와 Function()도 마찬가지. typeof Array() 결과는 Array
+
+            // 생성자 키워드 없이 어떻게 생성자 함수로 설계할 수 있지???
+            // 자바스크립트의 함수는 두 가지 역할을 함 : Callable, Constructable
+            // Callable : 함수처럼 호출 가능 f(). 내부 메서드 : [[Call]]
+            // Constructable : 생성자처럼 호출 가능 new f(). 내부 메서드 : [[Construct]]
+            function Foo() {
+                console.log("나는 생성자이자 함수야.");
+            }
+            Foo(); // [[Call]]: 함수 호출
+            new Foo(); // [[Construct]]: 생성자 호출
+            // 즉, 어떤 함수든 [[Construct]]가 구현되어 있으면 "생성자함수"가 될 수 있음
+            // 따라서 Array() Obejct() Function()등의 built-in 객체들은 자바스크립트 엔진
+            // 내부에서 [[Call]]과 [[Construct]]를 둘 다 정의했기 때문에
+
+            // 값 대입
+            arr1[0] = 'a';
+            arr1[1] = 'b';
+            arr1[4] = 'c'; // 'a', 'b', empty, empty, 'c'
+            console.log(arr1[2]); // undefined => falsy한 값
+            // isNaN에도 undefined나 empty 감지할 수 있음
+            console.log(arr1, arr1.length);
+
+            // 반복문
+            // 기본 Basic Loop
+            for (let i = 0; i < arr1.length; i++) {
+                console.log(arr1[i]);
+            }
+            // 향상된 반복문
+            // 1. for..of 문 (배열 객체 반복문일 때 권장되는 방식)
+            //  - 배열 객체에서 사용하는 반복문으로, 각 인덱스에 담겨있는 값을 변수로 꺼내서 사용가능
+            //  - 자바의 forEach문과 유사
+            for (let item of arr1) { // : 콜론 대신 of 사용
+                console.log(item);
+            }
+            // 2. for..in 문
+            //  - 배열 뿐만 아니라 객체 또한 반복시킬 수 있는 반복문
+            //  - 객체({})의 key 값을 저장할 수 있는 변수가 필요
+            for (let index in arr1) {
+                console.log(index, arr1[index]);
+            }
+            // 내부에 값이 저장되어 있지 않은(empty) 요소는 출력되지 않음
+            const obj = {
+                0 : "a",
+                name : "mkm",
+                age : 20
+            };
+            for(let key in obj) {
+                // 객체 내부의 속성에 접근하는 두 가지 방법
+                console.log(obj[key]);
+                //console.log(obj.key); 지금 당장은 사용 불가
+            }
+        }
+        function test2() {
+            const arr1 = [1,2,3]; // int[] arr = {1,2,3};
+            const arr2 = new Array("철수","영희","김밥");
+            const arr3 = [1,2,3,"안녕",true,
+                        {id:'mkm'},['a','b','c'],
+                        function(){console.log('ㅋㅋ')}];
+            arr3[7](); // typeof로 찾을수도 있음
+        }
+    </script>
+    <h2>Array Method</h2>
+    <input type="button" value="indexOf" onclick="test3();">
+    <input type="button" value="concat" onclick="test4();">
+    <input type="button" value="join" onclick="test5();">
+    <input type="button" value="reverse" onclick="test6();">
+    <input type="button" value="sort" onclick="test7();">
+    <input type="button" value="push | pop " onclick="test8();">
+    <input type="button" value="unshift | shift" onclick="test9();">
+    <input type="button" value="slice" onclick="test10();">
+    <input type="button" value="splice" onclick="test11();">
+    <input type="button" value="@실습문제" onclick="test12();">
+    <input type="button" value="forEach" onclick="test13();">
+    <input type="button" value="find,filter,map" onclick="test14();">
+    <ul id="hobby-list"></ul>
+    <hr>
+    <ul id="drink">
+        <li>coke</li>
+        <li>juice</li>
+        <li>coffee</li>
+        <li>beer</li>
+        <li>wine</li>
+    </ul>
+    <!-- input:b[onclick] -->
+    <input type="button" value="@실습문제#drink" onclick="test15();">
+    <script>
+        const test3 = function() {
+            const arr1 = ['a','b','c'];
+            console.log(arr1.indexOf('a'));
+            console.log(arr1.indexOf('b'));
+            console.log(arr1.indexOf('d')); // -1
+            // indexOf의 반환값이 -1이라면 찾고자하는 값이 없다는 의미
+        };
+        const test4 = function() {
+            const arr1 = [1,2,3,4,5];
+            const arr2 = [6,7,8,9,10];
+            const arr3 = arr2.concat(arr1);
+            console.log(arr3); // [6,7,8,9,10,1,2,3,4,5]
+        };
+        const test5 = function() {
+            // join : 배열 내부의 요소를 하나의 문자열로 합쳐서 리턴
+            const arr = [1,2,3,4,5]; // 기본값은 , 로 연결
+            console.log(arr.join()); // 1,2,3,4,5
+            console.log(arr.join('')); // 12345
+        };
+        const test6 = function() {
+            // reverse : 배열의 순서를 뒤집은 값을 리턴
+            // * 원본 배열의 값이 바뀐다 *
+            const arr = [1,2,3,4,5];
+            arr.reverse();
+            console.log(arr); // [5,4,3,2,1]
+        };
+        const test7 = function() {
+            const arr = [4,2,3,1,15];
+            arr.sort(); // 기본값 : "사전등록순서상" 오름차순 정렬
+            console.log(arr); // [1,15,2,3,4] 정수값 기준이 아니라 "문자열 기준"이라서
+            console.log('15'<'2'); // true
+            console.log(15 < 2); // false
+            // 따라서 기본정렬조건이 아니라 custom된 정렬조건을 제시해 주어야 함
+            // 정수 기준 정렬조건 추가하기
+            const arr2 = [1,2,15];
+            arr2.sort(function(a,b) {
+                return a-b; // 오름차순. 1,2,15
+                return b-a; // 내림차순. 15,2,1
+            });
+            console.log(arr2);
+            // 문자열 기준 내림차순 정렬조건 추가하기
+            const arr3 = ["홍길동","김길동","라마단","다나가"];
+            arr3.sort();
+            console.log(arr3); // 김,다,라,홍
+            // sort => reverse 하면 반복을 2번 하는거
+            arr3.sort((a,b) => { // 화살표 모양이 살짝 다름. 생략규칙은 똑같음
+                // - 연산이 불가능한 이유 NaN으로 자동형변환 되어서
+                // Returns the Unicode value of the character at the specified location
+                return b.charCodeAt() - a.charCodeAt();
+                // 양수, 음수, 0
+                if(a > b) return -1; // (배열 인덱스 기준)자리 이동 되는 경우
+                if(a < b) return 1;
+                return 0;
+            }); 
+            console.log(arr3); // 홍,라,다,김
+        };
+        const test8 = () => {
+            /*
+                push : 배열의 맨 마지막에 요소를 추가한 후, 변경된 길이를 반환
+                pop : 배열의 마지막 요소를 제거하고, 제거된 요소를 반환
+            */
+            const arr = [];
+            arr.push(1);
+            arr.push(2);
+            arr.push(3);
+            console.log(arr);
+
+            console.log(arr.pop(), arr); // 3 [1,2]
+            console.log(arr.pop(), arr); // 2 [1]
+            console.log(arr); // [1]
+        };
+        const test9 = function() {
+            /*
+                unshift : 배열의 0번째 인덱스에 요소를 추가한 후, 변경된 길이를 반환
+                shift : 배열의 0번째 요소를 제거하고, 제거된 요소를 반환
+                앞/뒤로 한 칸씩 밀리기 때문에 배열의 크기가 클 수록 효율이 좋지 못함
+            */
+            const arr = ['사과','배','포도'];
+            arr.unshift('토마토');
+            console.log(arr); // ['토마토','사과','배','포도']
+            console.log(arr.shift()); // '토마토'
+            console.log(arr); // ['사과','배','포도']
+        };
+        const test10 = function() {
+            // slice(시작인덱스, 종료인덱스(미포함)) 자바의 sublist와 똑같음
+            const arr = ['COKE','PIZZA','BURGER','KIMCHI'];
+            const arr2 = arr.slice(1,3);
+            console.log(arr, arr2); // 원본은 그대로
+            const arr3 = arr.slice();
+            console.log(arr3); // 깊은 복사
+        };
+        const test11 = function() {
+            /*
+                splice : 배열 내부의 요소 추가 & 제거
+                splice(시작 인덱스, 삭제할 갯수, 추가할 요소1, 추가할 요소2, ...)
+                추가할 요소는 삭제 가능
+            */
+            const arr = ['a','b','c','d','e'];
+            // a x y c d e
+            arr.splice(1, 1, 'x', 'y');
+            console.log(arr);
+            // a x k h e
+            arr.splice(2, 3, 'k', 'h');
+            console.log(arr);
+        };
+        /*
+         * prompt를 이용해 사용자의 취미리스트를 입력받으세요.
+         *  예) 농구,수영,캠핑,낚시
+         *  ,구분자로 잘라서 배열로 담은후,
+         *  사전순 정렬이후, ul#hobby-list의 자식li태그로 추가하세요.
+         */
+        const test12 = function() {
+            const hList = window.prompt("취미 리스트 입력 : ");
+            const hArr = hList.split(',');
+            hArr.sort();
+            //let str = "";
+            const ul = document.querySelector("ul#hobby-list");
+            for (let hobby of hArr) {
+                //str += "<li>" + hobby + "</li>";
+                ul.innerHTML += "<li>" + hobby + "</li>";
+            }
+            //document.querySelector("ul#hobby-list").innerHTML = str;
+        };
+        const test13 = function() {
+            /*
+                arr.forEach(함수(element, index){
+                    // 반복적으로 실행할 구문
+                })
+            */
+            const arr = [1,2,3,4,5];
+            let sum = 0;
+            arr.forEach(function(element, index){
+                console.log(element, index);
+            })
+            arr.forEach((element, index) => {
+                sum += element;
+            })
+            console.log(sum);
+            arr.forEach(fn1);
+            arr.forEach(fn2);
+        };
+        const fn1 = function() {
+            console.log("함수표현식");
+        }
+        function fn2() {
+            console.log("함수선언식");
+        }
+        const test14 = function() {
+            /*
+                1. find
+                 - 배열에서 내가 지정한 조건을 만족하는 1개의 요소를 찾은 후 반환
+                2. filter
+                 - 배열에서 내가 지정한 조건들을 만족하는 모든 요소를 찾은 후 배열에 담아서 반환
+                3. map
+                 - 배열 안의 데이터를 내가 원하는 요소로 변환시켜 새로운 배열에 담아서 반환
+            */
+            const objArr = [
+                {id:'alsrudals1',name:'민경민'},
+                {id:'alsrudals2',name:'밍경밍'},
+                {id:'alsrudals3',name:'밈겸밈'},
+                {id:'alsrudals4',name:'민견민'}
+            ];
+            // 1. find : 내가 원하는 요소를 찾으면 찾은 요소 반환, 찾지 못하면 undefined 반환
+            const findItem = objArr.find((element, index) => {
+                return element.id === 'alsrudals1'; // true 혹은 false가 나오는 조건식 반환
+            });
+            console.log(findItem);
+            // 2. filter : 조건을 만족하는 요소 여러개(새로운 배열)를 반환
+            const filteredArr = objArr.filter(e => e.name.includes("민"));
+            console.log(filteredArr);
+            console.log(filter(objArr, e => e.name.includes("경")));
+            // 3. map : 배열 내부의 요소를 원하는 요소로 변경, 변경한 배열을 반환
+            const mappedArr =
+            objArr.map(function(element){
+                return {
+                    newId : element.id,
+                    newName : element.name
+                };
+            });
+            console.log(mappedArr);
+        }
+        // ~~~~~~ filter 메서드 직접 구현해보기 ~~~~~~
+        function filter(arr, func) { // 원래는 arr 없을 것
+            // function의 실행결과가 true가 나오는 경우, 해당 요소를 새로운 배열에 담아서 반환
+            const newArr = []; // find는 배열이 아니라 undefined로 초기화
+            for(let i = 0; i < arr.length; i++) {
+                // func == 사용자가 전달한 함수
+                // 콜백 함수: 자체적으로 실행되지 않고 다른함수의 내부에서 실행되는 함수
+                if(func(arr[i], i, arr)) {
+                    newArr.push(arr[i]);
+                }
+            }
+            return newArr; // forEach는 리턴이 없는 것
+        }
+        const test15 = () => {
+            var drink = [];
+            var findOne ;
+            var filteredArr;
+            var mappedDrink;
+            var priceArr = [2000, 1600, 4000, 8000, 15000];
+            // 1) 배열 drink에 #drink태그의 자식li태그 텍스트를 추가. (forEach활용)
+            // ['coke', 'juice', 'coffee', 'beer', 'wine']
+            const drk = document.querySelectorAll("#drink>li");
+            drk.forEach((element, index) => {
+                //console.dir(element);
+                //drink[index] = element.innerText;
+                drink.push(element.innerText);
+            });
+            console.log(drink);
+            // 2) 배열 drink에서 'ff'가 들어가는 요소를 선택해서 findOne 반환. (find 활용)
+            // coffee
+            findOne = drink.find((element) => {
+                //console.log(element);
+                return element.includes("ff");    
+            });
+            console.log(findOne);
+            // 3) 배열 drink에서  'o'가 들어가는 요소들을 선택해서 filteredArr 반환. (filter활용)
+            // ['coke','coffee']
+            filteredArr = drink.filter((element) => {
+                return element.includes('o');
+            });
+            filteredArr = drink.filter(function(elem) {
+                if (elem.includes('o')) {
+                    return true;
+                }
+                return false;
+            });
+            console.log(filteredArr);
+            // 4) 배열 drink를 활용하여 음료객체 배열을 생성 한후 mappedDrink에 반환(map 활용)
+            // [{"menu": "coke","price": 2000},{"menu": "juice","price": 1600},{"menu": "coffee","price": 4000},
+            // {"menu": "beer","price": 8000},{"menu": "wine","price": 15000}]
+            mappedDrink = drink.map((element, index) => {
+                return {
+                    menu : element,
+                    price : priceArr[index]
+                };
+            });
+            mappedDrink = drink.map(function(elem, index) {
+                const newObj = {
+                    menu : elem,
+                    price : priceArr[index]
+                };
+                return newObj;
+            });
+            console.log(mappedDrink);
+        };
+    </script>
+</body>
+</html>
