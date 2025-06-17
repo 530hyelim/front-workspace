@@ -112,6 +112,206 @@
         function test4() {
             //game.shutdown(); // undefined.shutdown() 널포인터랑 비슷한 에러 발생
             game && game.shutdown();
+            game && game.duration();
+        }
+        function test5() {
+            const student = {};
+            student.name = "홍길동"; // 동적으로 속성 추가
+            student["class"] = "G";
+            student["no"] = 33;
+            console.log(student); // 화살표 열면 현재 시점의 student 객체에 대한 정보 출력
+
+            // 속성 제거
+            delete student.no;
+            delete student["class"];
+            console.log(student);
+        }
+        function test6() {
+            /*
+                toString 메서드 오버라이딩
+                 - 자바스크립트는 모든 객체가 Object 상속받음
+            */
+            const notebook = {
+                title: '오늘의 일기',
+                content: '오늘은 성겸이가 지각을 했다.',
+                date: new Date(),
+                toString : function() {
+                    //return this.title + " " + this.content;
+                    // 객체 내부의 속성이 많아질수록 어려워짐
+                    let str = "";
+                    for (let key in this) {
+                        key != "toString" && // 짧은 조건문
+                        (str += "key : " + key + " , value : " + this[key] + "\n");
+                    }
+                    return str;
+                }
+            };
+            console.log(notebook);
+            console.log(notebook.toString()); // [object Object] 
+            console.log(notebook + "1");
+            // 일반 사용자가 함부로 보면 안되는 값들이 있기 때문에 나름대로의 캡슐화를 한 것
+        }
+    </script>
+    <h2>객체 배열</h2>
+    <input type="button" value="실행" onclick="test7();"/>
+    <script>
+        function test7() {
+            const pets = [
+                {
+                    name : "꽃분",
+                    breed : "말티즈",
+                    weight : 4.5,
+                    bark : function() {
+                        return this.weight > 10 ? "멍멍" : "왈왈";
+                    }
+                },
+                {
+                    name : "아랑",
+                    breed : "비숑",
+                    weight : 11,
+                    bark : function() { // 오타나면 빼먹을 수 있음 => 클래스 생성
+                        return this.weight > 10 ? "멍멍" : "왈왈";
+                    }
+                },
+                {
+                    name : "옥지",
+                    breed : "시바",
+                    weight : 9,
+                    bark : function() {
+                        return this.weight > 10 ? "멍멍" : "왈왈";
+                    }
+                }
+            ];
+            console.log(pets);
+            for (const pet of pets) {
+                console.log(pet.name + "(이)가 " + pet.bark() + " 짖는다.");
+            }
+        }
+    </script>
+    <h2>생성자 함수 & Prototype</h2>
+    <!-- 자바스크립트에서는 클래스를 생성자함수라 하고 생성자함수를 만들기 위해선 프로토타입이 필요 -->
+    <input type="button" value="실행" onclick="test8();"/>
+    <script>
+        /*
+            생성자 함수
+             - 자스에서 객체지향 프로그래밍을 지원하는 핵심 기능
+             - 클래스를 정의하기 위한 용도의 함수. 생성자 함수로 만든 함수는 new 연산자를 함께
+               사용해서 호출해야 한다. (생성자 함수 == class다 라고 봐도 무방함)
+             - 생성자함수는 첫 글자를 클래스처럼 대문자로 작성하는 것이 관례
+             - 모든 함수는 보이지 않는 prototype이라는 속성을 가지고 있으며, 이 prototype을 통해
+               상속을 지원한다. (prototype: 모던 자바스크립트의 class의 원본)
+
+            Prototype
+             - 함수 정의 시 prototype에는 부모객체가 생성되어 저장된다. 부모객체 미정의시에는
+               object 객체가 생성되어 저장된다. (자바의 super() 예약어와 비슷한 역할)
+        */
+        function Pet(kind, name, breed, weight) { // 레거시에는 class 예약어가 없었음
+            // 자바의 class. 부모객체는 {} Object가 됨
+            // 필드부 (레거시(~2015)에는 생성자부의 초기화 기능도 함께 진행)
+            // 생성자 함수 내부에서 this는 현재 생성된 객체의 주소값을 의미 (new 키워드가 있기때문)
+            this.kind = kind;
+            this.name = name;
+            this.breed = breed;
+            this.weight = weight;
+
+            // 생성자부
+            //constructor -> class 예약어에서 사용 가능
+
+            // 메서드부
+            this.bark = function() {
+                return this.weight > 10 ? "멍멍":"왈왈";
+            };
+
+            // 출력했을 때 안보이게 하려면?
+            // 현재 클래스의 부모객체(prototype)에 속성/메서드를 추가하는 방법
+            // Pet 객체가 가지는 공통적인 속성/메서드를 노출시키지 않고자 할 때 사용
+            // 복잡한 계층구조에서 정보은닉보다는 가독성?을 위해 주로 사용
+            Pet.prototype.bark = function() { // 프로토타입에 접근할 때에는 반드시 클래스명으로 작성
+                // this.prototype으로 접근하려면 this.__proto__.bark = function()
+                // 자식에서 부모객체 속성에 접근해서 값을 저장하는게 권장되지 않기 때문에 숨겨져있다.
+                return this.weight > 10 ? "야옹":"냥냥";
+                // Pet.prototype은 현재객체의 생성자 + 부모객체(Object)의 정보가 담겨있음
+                // Pet.protytype.__proto__.bark 하게 되면 최상위 Object 객체에서 전부 bark라는
+                // 함수를 사용할 수 있게 된 것 (어레이나 다른 클래스에서도 사용 가능)
+            };
+            // 일부 브라우저에서는 지원하지 않는 경우도 있다.
+            // 프로그램 전체에 악영향을 줄 수 있기 때문에.
+            Pet.prototype.__proto__.bark = function() {
+                return this.weight > 10 ? "캬캬":"케케";
+            };
+        }
+        function test8() {
+            const coco = new Pet("고양이","코코","브숏",3);
+            console.log(coco); // bark에 대한 정보 + prototpye 내부에 constructor에 대한 정보
+            console.log(coco.bark()); // this 내부에서 bark먼저 찾아보고 prototype을 통해
+            // 상위 영역으로 이동해서 메서드를 찾는다 (자바의 super랑 비슷함)
+            console.log([].bark());
+        }
+        // 사용성이 좋지 않아 모던 자바스크립트에서 class 예약어를 추가
+    </script>
+    <h2>자바스크립트 class</h2>
+    <input type="button" value="실행" onclick="test9();"/>
+    <script>
+        class Animal {
+            kind;
+
+            constructor(kind) { // 레거시에서는 자동으로 생성돼서 저장됨    
+                this.kind = kind;
+            }
+        }
+        // Animal 클래스를 상속받는 자식클래스
+        class Pet2 extends Animal {
+            // 실제로는 prototype 의 object 자리에 new Animal()을 만들어서 넣어줌
+            // 자바스크립트의 public vs. private 접근제한자
+            name;   // public
+            breed;
+            #hobby; // private (현재 클래스 내부에서만 접근가능하지만 콘솔창에 보이긴 함)
+            weight; // 사실상 . notation에 의해 자동으로 추가되기 때문에 생략 가능
+
+            // 모던js에서는 이 밑으로부터 쭉 자동으로 Pet2.prototype으로 추가되는 듯??????
+            constructor(name, breed, w8, kind) {
+                super(kind);
+                this.name = name;
+                this.breed = breed;
+                this.weight = w8; // 자바에서는 전역변수 이름과 매개변수로 받아온 값의 이름이
+                // 같을 때에 구분짓기 위해서 this 예약어를 사용했지만 여기서는 달라도 필수임
+            }
+            // getter/setter
+            // hobby에 값을 추가하는 setter 메서드
+            setHobby(value) {
+                this.#hobby = value;
+            }
+            getHobby() {
+                return this.#hobby;
+            }
+            // 모던 js의 getter/setter
+            // 접근자 프로퍼티
+            set hobby(value) {
+                this.#hobby = value;
+            }
+            get hobby() {
+                return this.#hobby ? this.#hobby : "취미없음";
+                // 또는 권한체크 같은 것 할 수 있음
+            }
+            // static 메서드
+            static bark(weight) {
+                return weight > 10 ? "멍멍":"왈왈";
+            }
+        }
+        function test9() {
+            const cat = new Pet2("코코","브숏",3,"고양이");
+            // must call super constructor in derived class
+            // 자바에서는 JVM이 생성자 첫번째줄에 super();을 만들어줬었음
+            cat.setHobby("츄르먹기");
+            console.log(cat.getHobby());
+            //cat.#hobby = "츄르먹기";
+            cat["#hobby"] = "츄르먹기2"; // 클래스 외부에서 접근 불가
+            cat.weight = 3.1; // 퍼블릭은 가능
+            
+            cat.hobby = "낮잠자기"; // hobby 속성에 대한 setter 방식 접근
+            console.log(cat.hobby);
+            console.log(cat);
+            console.log(Pet2.bark(11));
         }
     </script>
 </body>

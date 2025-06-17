@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>실습문제_closure</title>
+</head>
+<body>
+	<h3>@실습문제</h3>
+	<p>임의의 숫자를 더해가는 가산기를 만들어보자. 
+		사용자는 input#myadder를 통해 값을 입력하고, <br>
+		가산기는 입력 값만큼 저장된 변수의 값을 증가시키고, 증가된 값을 출력하는 프로그램을 작성하시오
+	</p>
+	가산기 : <input type="number" id="myadder" >
+	<button onclick="addFunc();">실행</button>
+	<script>
+		const input = document.querySelector("input#myadder");
+		let sum = 0;
+		function mkAddFunc (){
+			return function() {
+				sum += Number(input.value);
+				console.log(sum);
+			}
+		} 
+
+		var addFunc = mkAddFunc();
+	</script>
+</body>
+</html>

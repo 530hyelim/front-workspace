@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Function</title>
+</head>
+<body>
+    <h1>Function</h1>
+    <h2>함수 작성</h2>
+    <script>
+        function foo() {
+            // 함수 선언식 (호이스팅O)
+        }
+        //bar(); // cannot access bar before initialization
+        const bar = function ff() { // 함수에 이름넣어도 됨. 근데 의미 없음
+            // 함수 표현식 (호이스팅X)
+            // 익명함수, 람다식 사용가능
+        };
+        foo();
+        bar();
+        /*
+            1회용 함수를 작성할 때 사용하는 방법
+            IIFE(Immediately Invoked Function Expression)
+            (function(){})() 또는 (function(){}())
+        */
+        (function(){ // 괄호 내부에서 선언했기 때문에 접근가능 범위도 괄호 내부임
+            console.log("hello world");
+        })();
+        (function(){
+            console.log("goodbye world");
+        }());
+        // 매개변수가 필요한 경우
+        (function(name){
+            console.log(name+"님 안녕하세요")
+        })("혜림"); // 로딩과정에서 최초 1회 실행해야 될 때 사용
+    </script>
+    <h2>매개변수 | 매개인자</h2>
+    함수를 선언할 때 값을 받아오기 위한 변수 : 매개변수(name) <br>
+    함수를 호출하면서 전달하는 값 : 매개인자("혜림") <br>
+    <input type="button" value="실행" onclick="test1(); test1(1); test1('안','녕');">
+    <input type="button" value="실행" onclick="test2();">
+    <script>
+        /*
+            매개변수(parameter)
+             - 함수 선언 시 매개인자가 담길 공간
+            매개인자(argument)
+             - 함수 호출 시 전달할 값
+            
+            자바에서는 매개변수의 갯수와 자료형을 매개인자와 동일시켜야 했다.
+            하지만 자바스크립트에서는 매개변수와 매개인자의 갯수가 달라도 실행에 문제없다.
+        */
+        function test1(x) {
+            console.log("x = " + x);
+            // 모든 함수는 prototype에 arguments라는 배열형태의 저장공간(유사배열)을 가지고 있어서
+            // 2와 3 값이 자동으로 저장돼서 사용할 수는 있음
+
+            // 매개인자를 저장하는 arguments 배열 확인
+            console.log(arguments); // array 객체 빼고는 전부 유사배열. collection html 같은거
+            // 근데 어쨌든 유사배열이기 때문에 반복문 사용 가능
+            for (let argument of arguments) {
+                console.log(argument);
+            }
+        }
+        function test2() {
+            add(1,2,3,4,5,6,7,8,9,10);
+            add(12.34,45.67);
+            add('a','b','c','d');
+            // 매개인자의 값을 모두 합산하여 출력하는 add 메서드 작성하기
+            function add(x) {
+                let added = typeof x == "number" ? 0 : "";
+                for (let arg of arguments) {
+                    added += arg;
+                }
+                console.log(added);
+            }
+        }
+        //add(1,2,3,4,5); 블럭 내부에서 선언된 함수는 블럭 최상단으로만 호이스팅됨
+    </script>
+    <h2>함수 특징</h2>
+    <input type="button" value="return value" onclick="test3();">
+    <input type="button" value="중첩 함수" onclick="test4(10, 5);">
+    <script>
+        function test3() {
+            console.log(foo());
+        }
+        function foo() {
+            //return undefined; 함수의 return문이 없다면 undefined를 반환
+        }
+        function test4(a,b) {
+            const power = function(n) {
+                return n ** 2; // 제곱연산
+            };
+            c = Math.sqrt(power(a)+power(b));
+            console.log(window.c);
+        }
+    </script>
+    <h2>함수 고급</h2>
+    <input type="button" value="매개인자" onclick="test5();">
+    <input type="button" value="리턴값" onclick="test6();">
+    <input type="button" value="999" onclick="(soo())(999);">
+    <script>
+        /*
+            * 함수형 프로그래밍의 특징 *
+            자바스크립트에서 함수는 하나의 값으로 취급된다.
+             - 변수에 대입할 수 있고,
+             - 함수의 인자로 전달될 수 있고,
+             - 함수의 반환값으로 사용될 수 있음을 의미한다.
+        */
+        // 함수를 값으로써 전달하기
+        function test5() {
+            exec(function(index) {
+                // 요 안에 쓰여진 익명함수(fn)가 콜백함수
+                console.log(index+" : hello, "+names[index]);
+            });
+        }
+        var names = [
+            'html', 'css', 'js', 'jquery', 'java',
+            'oracle', 'mybatis', 'maven', 'lombok', 'spring'
+        ];
+        function exec(fn) { // fn: 콜백함수
+            // 1: hello, html
+            // 2: hell, css
+            for(var i = 0; i < names.length; i++) {
+                fn(i);
+            }
+        }
+        // 리턴값으로 함수를 반환하기
+        function test6() {
+            const hello = returnFunction("say");
+            // const hello2 = function(name){
+            //     console.log("say"+' '+name);
+            // };
+            hello('js'); // hello 함수에 대한 say값을 closure에 저장했다가 사용하는 거
+            // hello2('js');
+            //returnFunction("say")('css');
+            (function(name){
+                console.log("say"+' '+name);
+            })('css');
+        }
+        function returnFunction(say) {
+            return function(name){
+                console.log(say+' '+name);
+            };
+            // say: 지역변수도 전역변수도 아님. 클로저 스코프
+        }
+        // (soo())(999) == (function(n){console.log(n);})(999)
+        function soo() {
+            return function(n) {
+                console.log(n);
+            }
+        }
+        // 일회용 함수처럼 쓰였지만 아님. 일회용이러면 괄호 안에서 선언을 해야함.
+    </script>
+    <h2>Closure</h2>
+    <input type="button" value="globalCounter" onclick="test7();">
+    <input type="button" value="closureCounter" onclick="test8();">
+    <input type="button" value="closureCounter2" onclick="test9();">
+    <script>
+        let cnt = 0; // global(디버거 상 script) scope
+        function test7() {
+            // local scope
+            // this <- window
+            //debugger;
+            console.log("global : "+ ++cnt);
+        }
+        /*
+            클로져 (Closure)
+             - 중첩함수에서 하위 함수가 상위 함수의 변수를 참조할 때 발생하는 스코프
+             - 하위 함수에서 상위함수의 변수값을 참조하는 경우(hello('js')에서 'say')
+               하위함수의 closure 스코프에 변수값을 미리 추가해둔다.
+             - 이로인해 스택에서 사위함수의 메모리가 제거되더라도, 상위함수의 변수를
+               closure 스코프에서 그대로 가져다 사용할 수 있게 된다.
+               (자바에서 내부클래스에서 외부클래스 변수를 final처럼 사용하는 것과 비슷)
+        */
+        function funcY() {
+            let num = 100;
+            console.dir(funcZ);
+            function funcZ() {
+                //debugger; // 각 함수마다 closure 스코프가 생성됨
+                // 함수 단위로 저장되기 때문에 수정이 얼마든지 가능하다.
+                console.log('num = ', num);
+                // 가장 먼저 local에서 num을 찾아보고 두번째로 closure 스코프 찾아보고
+                // 없으면 global/script 에서 찾아보고 없으면 에러 
+                // (스코프 체이닝 방식으로 변수를 찾는다)
+            }
+            return funcZ; // 호출하지 말고 함수값 그대로 반환해줘야 함
+        }
+        const myFn = funcY();
+        myFn();
+
+        function makeClosureCounter() {
+            let cnt = 0; // 클릭할때마다 왜 초기화가 안되지?????????????????
+            return function() {
+                console.log("closureScope : "+ ++cnt);
+            }
+        }
+        const test8 = makeClosureCounter(); // makeClosureCounter()는 여기서 딱 한번만
+        // 실행되고, 누를 때마다 실행되는건 return으로 반환되는 function이 실행되는 것
+        const test9 = makeClosureCounter();
+    </script>
+</body>
+</html>
