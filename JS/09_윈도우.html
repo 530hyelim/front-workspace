@@ -146,16 +146,81 @@
         */
         function test7() {
             document.querySelector("#countdown").style.display = "block";
-            let s = 10;
+            let s = 10; // 클로저스코프 : 함수가 자신을 둘러싼 외부 함수의 지역 변수들에
+            // 계속 접근할 수 있게 해주는 스코프
             function foo() {
                 document.querySelector("#countdown").innerText = s--;
+                if (s < 0) {
+                    clearInterval(cdId); // cdId도 클로저??????
+                    countdown.innerText = "뻥!";
+                }
             }
+            // 비동기 메서드이기 때문에 바로 스택에서 지워지고 큐로 넘어가서 test7()이 삭제됨
+            // 그래서 클로저스코프
             const cdId = setInterval(foo, 1000);
-            setTimeout(function() {
-                clearTimeout(cdId);
-                document.querySelector("#countdown").innerText = "뻥!";
-            }, 11000);
+            // setTimeout(function() {
+            //     clearTimeout(cdId);
+            //     document.querySelector("#countdown").innerText = "뻥!";
+            // }, 11000);
         }
     </script>
+    <h2>BOM</h2>
+    <h3>Browser Object Model</h3>
+    <input type="button" value="navigator" onclick="test8();">
+    <input type="button" value="location" onclick="test9();">
+    <input type="button" value="history" onclick="test10();">
+    <input type="button" value="screen" onclick="test11();">
+    <script>
+        function test8() {
+            /*
+                navigator : 현재 실행중인 brower에 대한 정보를 가진 객체
+                 - 클라이언트의 브라우저 정보를 확인하여 적합한 컨텐츠를 제공
+            */
+            console.log(navigator);
+        }
+        console.log("페이지 로딩 시 실행");
+        function test9() {
+            /*
+                location : 
+                 - 브라우저의 주소창과 관련된 정보를 가진 객체
+                 - 브라우저의 URL에서 프로토콜, 호스트네임, 포트번호, 자원경로 등을
+                   얻어올 수 있다.
+                 - 브라우저의 URL을 조작하여 다른 값으로 변경할 수도 있다.
+            */
+            console.log(location);
+            //location.reload(); // 현재 페이지 새로고침
+            location.href = "https://naver.com";
+            // 페이지 이동 메서드
+            //location.assign("https://naver.com"); // 뒤로가기 가능(권장하는 방식)
+            //location.replace("https://naver.com"); // 뒤로가기 불가능
+        }
+        function test10() {
+            /*
+                history
+                 - 방문기록과 관련된 정보를 가진 객체
+                 - back() : 뒤로가기
+                 - forward() : 앞으로가기
+                 - go(n) : n번째 페이지로 이동하기 가능
+            */
+            console.log(history);
+            history.forward();
+        }
+        function test11() {
+            /*
+                screen
+                 - 모니터 관련 정보를 가진 객체
+            */
+            console.log(screen);
+        }
+    </script>
+    <h2>DOM</h2>
+    <h3>Document Object Model</h3>
+    <img src="DOM.png" alt="">
+    <input type="button" value="createElement" onclick="test12();">
+    <input type="button" value="createImg" onclick="test13();">
+    <input type="button" value="deleteNode" onclick="deleteNode(this);">
+    <div class="img-wrapper"></div>
+    <div class="result"></div>
+    <script src="./js/09_window.js"></script>
 </body>
 </html>

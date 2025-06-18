@@ -15,16 +15,19 @@
 	가산기 : <input type="number" id="myadder" >
 	<button onclick="addFunc();">실행</button>
 	<script>
-		const input = document.querySelector("input#myadder");
-		let sum = 0;
+		// 전역변수 사용금지. 클로저를 활용할 것
 		function mkAddFunc (){
+			const input = document.querySelector("input#myadder");
+			let sum = 0;
 			return function() {
-				sum += Number(input.value);
-				console.log(sum);
+				//sum += Number(input.value);
+				sum += input.value * 1;
+				alert(sum);
 			}
 		} 
-
 		var addFunc = mkAddFunc();
+		var addFunc2 = mkAddFunc();
+		// 전역변수를 사용하게 되면 다른 함수를 만들었을 때 변수에 저장되는 값을 공유하게 됨
 	</script>
 </body>
 </html>

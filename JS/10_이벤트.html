@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event</title>
+    <style>
+        .box {
+            width: 100px;
+            height: 100px;
+            border: 3px solid #000;
+            background: tomato;
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+    <style>
+        .boxx {
+            border: 1px solid #000;
+            padding: 20px;
+        }
+        .box1 {background-color: yellowgreen;}
+        .box2 {background-color: green;}
+        .box3 {background-color: springgreen;}
+    </style>
+</head>
+<body onclick="displayMsg(event, this);">
+    <h1>Event</h1>
+    <a href="https://www.w3schools.com/jsref/dom_obj_event.asp">W3Schools - HTML DOM Events</a>
+    
+    <h2>Event Handler Binding</h2>
+    <input type="button" value="inline event속성" onclick="test1();" onmouseover="test1();">
+    <input type="button" value="event속성 지정" id="btn2">
+    <input type="button" value="addEventListener" id="btn3">
+    
+    <h2>Event | Event Target</h2>
+    <div class="box"></div>
+    
+    <h2>KeyEvent</h2>
+    <input type="text" id="userInput">
+    <div class="text-wrapper"></div>
+    
+    <h2>Submit Event</h2>
+    <form action="">
+        <fieldset>
+        <legend>로그인</legend>
+        <table>
+            <tr>
+            <th>
+                <label for="userId">아이디</label>
+            </th>
+            <td>
+                <input type="text" name="userId" id="userId">
+            </td>
+            </tr>
+            <tr>
+            <th>
+                <label for="pwd">비밀번호</label>
+            </th>
+            <td>
+                <input type="password" name="pwd" id="pwd">
+            </td>
+            </tr>
+            <tr>
+            <td colspan="2" style="text-align: center;">
+                <input type="submit" value="로그인">
+            </td>
+            </tr>
+        </table>
+        </fieldset>
+    </form>
+
+    <h2>Event Propagation - Bubbling (이벤트 전파)</h2>
+    <!--
+        이벤트 버블링
+         - 요소에 이벤트 핸들러가 작동하면, 이어서 부모요소의 핸들러
+           그 부모요소의 핸들러, ... 순으로 이벤트가 상위요소로
+           전파되는 행위를 지칭함
+    -->
+    <div class="boxx box1" data-text="box1" onclick="displayMsg(event, this);">
+        <!-- 
+            event도 window 아래에 있는 객체임. 이 event 객체는 클릭 한 번당 딱 한번씩만 생성?되기
+            때문에 e.target도 함께 전파되는것. e.currentTarget 쓰면 현재 핸들러가 붙은 요소를
+            가져오기 때문에 전파 단계마다 바뀜. 즉 e.currentTarget === this (화살표 함수 핸들러가
+            아닌 전통적인 function 핸들러를 사용할 경우. 화살표 함수 핸들러에서 this는 바깥 스코프)
+            "displayMsg(event, this);" == 
+            function(event) {
+                displayMsg(event, this) {} 
+            } 
+        -->
+        <div class="boxx box2" data-text="box2">
+            <div class="boxx box3" data-text="box3" onclick="displayMsg(event, this);"></div>
+        </div>
+    </div>
+
+    <script src="./js/10_event.js"></script>
+</body>
+</html>

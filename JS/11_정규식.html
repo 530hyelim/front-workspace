@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>정규식</title>
+    <style>
+        #area {
+            margin: 30px 10px;
+        }
+        mark {
+            background-color: magenta;
+        }
+    </style>
+</head>
+<body>
+    <h1>Regular Expression (정규 표현식)</h1>
+    <input type="button" value="기본" onclick="test1();">
+    <input type="button" value="flag - g | i | m" onclick="test2();">
+    <input type="button" value="anchor - ^ | $" onclick="test3();">
+    <input type="button" value="@실습문제" onclick="test4();">
+    <input type="button" value="." onclick="test5();">
+    <input type="button" value="[]" onclick="test6();">
+    <input type="button" value="@실습문제" onclick="test7();">
+    <input type="button" value="\d \w \s" onclick="test8();">
+    <input type="button" value="( | )" onclick="test9();">
+    <input type="button" value="escaping" onclick="test10();">
+    <input type="button" value="* + ?" onclick="test11();">
+    <input type="button" value="{n,m}" onclick="test12();">
+    <input type="button" value="look around" onclick="test13();">
+    <div id="area"></div>
+    <script>
+        /*
+            정규 표현식
+             - 특정 규칙을 가진 문자열 집합에 대한 형식 언어            
+             - 유효성 검사, 검색, 문자열 치환 등을 효율적으로 처리할 수 있다.
+             - 언어에 독립적이다. db LIKE '%%' 요기에 패턴 넣을 수 있음
+               자바나 db에 replace() 메서드에 사용할 수도 있음
+        */
+        const area = document.querySelector("#area");
+        function test1() {
+            // 정규표현식 객체 생성
+            const re1 = new RegExp("[a-z]");
+            // 문자열 형식으로 패턴 지정하기. 알파벳 a부터 z까지 한글자의 문자를 검사
+            const re2 = new RegExp(/[0-9]/);
+            // 주석 사이에 패턴 제시하기. 문자들 사이에서 숫자 하나를 검사
+            const re3 = /a/; // new RegExp("a") == /a/
+            // 대괄호[] : 한글자의 문자. -는 빼기가 아니라 까지 라는 뜻
+
+            // 정규 표현식 내부의 메서드
+            // 1. test() : boolean (하나라도 있으면 true 없으면 false)
+            console.log(re3.test("abcde")); // true
+            console.log(re3.test("bcde")); // false
+            console.log(re2.test("mkm1234")); // true
+            console.log(re2.test("mkm")); // false
+
+            // 문자열(string)에서 정규 표현식을 활용하는 메서드
+            // 1. match() : 배열 형태의 값 반환 (일치하는 값을 저장) or null
+            console.log("cba".match(re1)); // true
+            // 2. search() : 일치하는 값의 인덱스 반환 or -1
+            // indexOf와 유사하나 정규표현식을 통해 검사
+            console.log("aabbccdd".search(re3)); // 0
+            // 3. replace()
+            //console.log('cabakacada'.replace('w','u'));
+            console.log('cabakacada'.replace('u','w')); // 자바와 다르게 원래는 한 글자만 바꾸지만
+            console.log('cabakacada'.replace(/a/g,'!!')); // 정규식 사용하면 다 바꿀 수 있음
+            console.log("dsf '3'sfdfs".replace(/\s'3's/, 'u'));
+            // 물론 replaceAll 함수 사용해도 됨
+            // 4. split()
+            console.log("사과 배 토마토 양파".split(/\s/));
+        }
+        function test2() {
+            /*
+                정규표현식의 flag 문자
+                 - g, i, m
+                 - g global 전역비교를 수행
+                 - i ignore 대소문자를 구분하지 않고 비교를 수행
+                 - m multi-line 여러줄(\n)의 문자열에 대한 줄단위 비교 수행
+            */
+            const str = "Javascript jQuery Ajax";
+            // $& : 정규식으로 검사된(매칭된) text를 가리키는 예약어
+            area.innerHTML = str.replace(/a/gi, "<mark>$&</mark>");
+        }
+        function test3() {
+            /*
+                anchor 문자
+                 - ^ 문자열의 시작
+                 - $ 문자열의 끝
+            */
+            const str = "Javascript\nxxx\njQuery\nAjax";
+            area.innerHTML = str.replace(/^j/gim,"<mark>$&</mark>");
+            // 전체를 하나의 줄로 인식하기 때문에 각 라인의 첫/끝 글자를 검사하려면 m 필요
+            area.innerHTML = str.replace(/x$/gim,"<mark>$&</mark>");
+            //area.innerHTML = str.replace(/^jt$/gim,"<mark>$&</mark>"); // 이거는 "jt"만 잡음
+            // 중간에 다른 글자들이 들어올 수 있게 하려면 다른 포맷 추가해야함
+        }
+        function test4() {
+            /*
+             * 사용자로부터 문자열을 입력받고(prompt),
+             * k로 시작하면서, h로 끝나는 경우에는 잘하셨습니다.
+             * 아닌 경우, 적합한 문자가 아닙니다. 경고창을 띄우세요.
+             */
+            const str = prompt("문자열 입력 : ");
+            if (str.match(/^k/) && str.match(/h$/)) {
+                alert("잘하셨습니다");
+            } else {
+                alert("적합한 문자가 아닙니다");
+            }
+        }
+        function test5() {
+            // . db LIKE절의 _와 비슷 (임의의 한 글자를 의미)
+            const re1 = /^...$/; // 세글자 문자를 찾는 것
+            // . 이라는 글자를 찾으려면 [.][.][.] 이렇게 해야함
+            console.log(re1.test('ab')); // false
+            console.log(re1.test('abc')); // true
+            console.log(re1.test('abcd')); // false
+
+            const re2 = /a.b/g; // 3글자인데 앞뒤로 ab가 붙어있는 문자
+            area.innerHTML = "aa aab aaab".replace(re2,'<mark>$&</mark>');
+
+            const re3 = /in..$/; // in뒤에 두글자로 끝나는 문자
+            ["goingo", "goin", "gointo", "going"].forEach(element => {
+                console.log(re3.test(element)); // 0번 2번 true
+            });
+
+            const re4 = /^c...k$/;
+            ["ck", "cbk", "cbak", "cbawk", "cbawak"].forEach(element => {
+                console.log(re4.test(element)); // 3번만 true
+            });
+        }
+        function test6() {
+            /*
+                [] : 한글자를 의미
+                 - 대괄호 내부에는 문자의 범위를 표현한다
+                 - 대괄호 내부에서 사용하는 특수문자는 문자로써 해석된다
+                 - 대괄호 내부에서 시작이 ^인 경우 뒤쪽의 문자를 제외한 나머지 문자
+                   (논리 부정의 역할. 제일 첫번째로 사용되었을 경우에만)
+            */
+            const s = "Javascript jquery Ajax 12345";
+            area.innerHTML = s.replace(/[aji3]/g,'<mark>$&</mark>');
+            // a 또는 j 또는 i 또는 3을 검사
+            area.innerHTML = s.replace(/[^aj]/g,'<mark>$&</mark>');
+            area.innerHTML = s.replace(/[A-Z0-3a-z\s]/g,'<mark>$&</mark>');
+
+            const s2 = "안녕하세요? 저는 미국에서 온 james예요. ㅋㅋㅠㅠ"
+            area.innerHTML = s2.replace(/[ㄱ-ㅎㅏ-ㅣ가-힣]/g,'<mark>$&</mark>');
+            // ㄱ-힣 사이에 다른 나라 언어같은게 등록돼있을수도 있어서 나눠쓰는게 안전
+        }
+        function test8() {
+            /*
+                문자 클래스
+                \d decimal 숫자 == [0-9]
+                \w word 영문자, 숫자, _ == [a-zA-Z0-9_]
+                \s space 공백문자, 탭, 개행문자 == [ \t\n]
+
+                \D 숫자가 아닌 문자 == [^0-9]
+                \W 영문자, 숫자, _가 아닌 문자 == [^a-zA-Z0-9_]
+                \S 공백문자, 탭, 개행문자가 아닌 문자 == [^ \t\n]
+            */
+            var s = "A1 B2 c3 d_4 e:5' ` ffGG6767--__--!\"@#$%^&*()     가\n나\t다\n";
+            area.innerHTML = s.replace(/\d/g, "<mark>$&</mark>");
+            area.innerHTML = s.replace(/[0-9]/g, "<mark>$&</mark>");
+            area.innerHTML = s.replace(/\w/g, "<mark>$&</mark>");
+            area.innerHTML = s.replace(/[a-z0-9_]/gi, "<mark>$&</mark>");
+            area.innerHTML = s.replace(/\s/g, "<mark>$&</mark>");
+            area.innerHTML = s.replace(/[ \t\n]/g, "<mark>$&</mark>");
+
+            area.innerHTML = s.replace(/\D/g, "<mark>$&</mark>");
+            area.innerHTML = s.replace(/[^0-9]/g, "<mark>$&</mark>");
+            area.innerHTML = s.replace(/\W/g, "<mark>$&</mark>");
+            area.innerHTML = s.replace(/[^a-z0-9_]/gi, "<mark>$&</mark>");
+            area.innerHTML = s.replace(/\S/g, "<mark>$&</mark>");
+            area.innerHTML = s.replace(/[^ \t\n]/g, "<mark>$&</mark>");
+        }
+        function test9() {
+            /*
+                그룹핑
+                () 그룹핑. 조건을 그룹화할 때 사용
+                 | or연산자 ([a]|[b])
+            */
+            var s = "월요일에는 월요병, 화요일은 화가 부글부글, "
+            + "수요일은 술이 확 땡긴다. 목요일이 목이 컥 막히고, 금요일은 금방 올거 같지 않다.";
+            const re1 = /[수목금]요일/g;
+            const re2 = /(수|목|금)요일/g;
+            const re3 = /(수요일|목요일|금요일)/g;
+            area.innerHTML = s.replace(re1, "<mark>$&</mark>");
+            area.innerHTML = s.replace(re2, "<mark>$&</mark>");
+            area.innerHTML = s.replace(re3, "<mark>$&</mark>");
+        }
+    </script>
+</body>
+</html>
