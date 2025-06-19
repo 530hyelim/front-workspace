@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jQuery 개요</title>
+</head>
+<body>
+    <h1>jQuery 개요</h1>
+    <h3>jQuery란</h3>
+    <pre>
+        기존에 자바스크립트 언어 만으로 구현하기에 복잡했던 구문 작성들을 간소화하기 위해
+        개발된 자바스크립트 기반 라이브러리. 즉, Javascript 방식으로 작성된 유용한 함수 및
+        메서드들이 정의되어 있다.
+
+        복잡한 자바스크립트 구문을 보다 짧고 쉽게 개발할 수 있어 생산성이 크게 향상된다.
+
+        특히, "DOM 요소와 관련된 조작"기능이나, 이벤트 처리기능, 비동기 통신(AJAX) 기능, 
+        추가 확장 플러그인 등 다양한 기능들을 제공한다.
+    </pre>
+    <hr>
+    <h3>jQuery 라이브러리 연결 방법</h3>
+    <p>
+        head 태그 내부에 script 태그로 jQuery 관련 .js 파일 가져오기 <br>
+        <br>
+        1. jQuery 라이브러리를 사이트에서 직접 다운로드 받은 후 경로를 지정하는 오프라인 방식 <br>
+         - 성능상의 이유로 압축된 compressed 버전 => 한 줄로 작성돼서 렌더링 X
+        <script src="./resources/jquery_3.7.1.js"></script> <br>
+        <br>
+        2. CDN (Content Delivery Network)를 통한 다운로드 방식 (온라인 방식) <br>
+         - jQuery 라이브러리를 제공하는 사이트 url을 src 연결경로로 지정 <br>
+         - 로딩되는 성능이 더 좋음. 웹 브라우저의 메모리에 js 파일을 캐시메모리에 저장해놨다가
+           즉시 사용할 수 있기 때문에. jQuery의 특정 기능이 마음에 안들어서 고쳐쓰고 싶을 때
+           주로 다운로드 받아서 사용. 보통은 CDN 방식을 많이 쓰지만 나름대로의 약점이 있음. 
+           CDN을 제공하는 사이트 자체가 다운되면 사용할 수 없다 (그럴 일은 사실상 거의 드물다)
+           그럴 일을 대비해서 동적으로 js 파일을 실행시킬 수 있는 방식도 있긴 함
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    </p>
+    <hr>
+    <h3>jQuery 구문 작성</h3>
+    <p>
+        <b>
+            jQuery 구문으로 DOM 요소를 다루는 구문을 작성할 예정이며, jQuery 명령어들은
+            문서 상의 모든 html 요소들이 로드 된 후에 실행 되어야 한다.
+        </b>
+        <br><br>
+        - 순수 자바스크립트로 html 페이지가 모두 로드된 이후에 코드가 실행되게 하려면 
+        <pre>
+            window.onload = function() {
+                // 실행 내용
+                // 사실상 이 안에 함수 여러개 호출할 수 있긴 한데
+                // 실수로 스크립트 내부에 window.onload 또 기술하게 되면
+                // 원하던 기능이 실행되지 않을 수 있음. jquery의 ready는 다 실행됨.
+            }
+            onload는 window의 이벤트 속성이기 때문에 딱 한개의 이벤트함수만 기술할 수 있고, 
+            덮어씌워지기 때문에 재사용성이 없음.
+        </pre>
+        - jquery에서의 onload 함수
+        <pre>
+            1) jQuery(document).ready(function() {
+                // 실행 내용;
+            });
+
+            2) $(document).ready(function() {
+                // 실행 내용;
+            });
+
+            3) $(function() {
+                // 가장 간결화 된 문법
+            });
+        </pre>
+        <script>
+            jQuery(document).ready(function() {
+                console.log("onload 함수와 동일한 기능을 하는 jQuery의 첫 번째 ready function");
+                // js script도 모두 로딩되고 나서 실행되기 때문에 아래 코드보다 나중에 실행됨
+            });
+            $(document).ready(function() {
+                console.log("같은 ready function 끼리는 작성한 순서에 맞춰서 실행됨");
+                // 하나만 실행되는 것이 아니라 모두 실행된다는 점이 onload와 차이점
+            })
+            $(function() {
+                console.log("마지막 ready function. 짧다!!!!!!!!");
+            });
+            console.log("jQuery의 ready function 안에 들어있지 않은 일반 코드");
+            // 스크립트 파일을 가장 아랫쪽에 넣는게 관례긴 하지만 필요에 따라 다른 위치에도
+            // 기술할 수도 있기 때문에 항상 jquery의 ready function 안에 코드 작성하자
+        </script>
+    </p>
+</body>
+</html>

@@ -84,8 +84,9 @@
             가져오기 때문에 전파 단계마다 바뀜. 즉 e.currentTarget === this (화살표 함수 핸들러가
             아닌 전통적인 function 핸들러를 사용할 경우. 화살표 함수 핸들러에서 this는 바깥 스코프)
             "displayMsg(event, this);" == 
-            function(event) {
-                displayMsg(event, this) {} 
+            function(event) { // 얘가 이벤트 핸들러 함수라서 첫매개변수에 이벤트 전달해야하고 (규칙)
+                displayMsg(event, this) {} // 이건 이벤트핸들러 함수 내부에 선언한 일반함수임
+                그래서 매개변수 자리 바껴도 상관없음
             } 
         -->
         <div class="boxx box2" data-text="box2">

@@ -148,7 +148,7 @@
         }
         function test8() {
             /*
-                문자 클래스
+                문자 클래스 (메타문자)
                 \d decimal 숫자 == [0-9]
                 \w word 영문자, 숫자, _ == [a-zA-Z0-9_]
                 \s space 공백문자, 탭, 개행문자 == [ \t\n]
@@ -186,6 +186,99 @@
             area.innerHTML = s.replace(re1, "<mark>$&</mark>");
             area.innerHTML = s.replace(re2, "<mark>$&</mark>");
             area.innerHTML = s.replace(re3, "<mark>$&</mark>");
+        }
+        function test10() {
+            /*
+                escaping
+                 - 메타문자를 실제문자값으로 사용하고자 한다면 \를 통해 이스케이핑 처리한다.
+                 - 단, [] 내부에서는 escaping이 필요없다. 원래 그냥 문자로 해석하기 때문
+                 - db에서의 escaping : LIKE '!%' ESCAPE '!' => %와일드카드를 일반 특수
+                   문자로 사용할 수 있음
+            */
+            const s = "$12$ ..\\-\\** $25$";
+            area.innerHTML = s.replace(/\$/g, "<mark>$&</mark>");
+            area.innerHTML = s.replace(/[$]/g, "<mark>$&</mark>");
+
+            // 가장 마지막 달러만 찾기
+            area.innerHTML = s.replace(/\$$/g, "<mark>$&</mark>");
+            // 가장 첫번째 달러만 찾기
+            area.innerHTML = s.replace(/^\$/g, "<mark>$&</mark>");
+
+            area.innerHTML = s.replace(/\\/g, "<mark>$&</mark>");
+            area.innerHTML = s.replace(/\./g, "<mark>$&</mark>");
+            area.innerHTML = s.replace(/\*/g, "<mark>$&</mark>");
+        }
+        function test11() {
+            /*
+                수량자
+                 a* : a가 0개 이상
+                 a+ : a가 1개 이상
+                 a? : a가 0개 혹은 1개
+            */
+            const s = "aabc abc bc";
+            area.innerHTML = s.replace(/a*b/g, "<mark>$&</mark>"); // aab ab b
+            area.innerHTML = s.replace(/a+b/g, "<mark>$&</mark>"); // aab ab
+            area.innerHTML = s.replace(/a?b/g, "<mark>$&</mark>"); // ab ab b
+        }
+        function test12() {
+            /*
+                수량표현식
+                 a{5} : a가 연달아서 5개
+                 a{2,5} : a가 2~5개
+                 a{3,} : a가 3개 이상
+                 a{,4} : 존재하지 않는 문법
+            */
+            const s = "aa aba abba abbba abbbbbaaaaaa";
+            // ababa 로 하려면 /(ab){2}a/ 그룹핑 해주어야 함
+            area.innerHTML = s.replace(/ab{2}a/g, "<mark>$&</mark>"); // abba
+            area.innerHTML = s.replace(/ab{1,2}a/g, "<mark>$&</mark>"); // aba abba
+            area.innerHTML = s.replace(/ab{2,}a/g, "<mark>$&</mark>"); // abba abbba
+            area.innerHTML = s.replace(/ab{3,}a{3}/g, "<mark>$&</mark>"); // abbbbbaaa
+            // 수량자를 수량표현으로 바꾸기
+            // 수량자가 가독성 확보에는 좀 더 도움이 될 수 있지만 몰라두댐~~~~
+            area.innerHTML = s.replace(/ab*a/g, "<mark>$&</mark>");
+            area.innerHTML = s.replace(/ab{0,}a/g, "<mark>$&</mark>");
+            area.innerHTML = s.replace(/ab+a/g, "<mark>$&</mark>");
+            area.innerHTML = s.replace(/ab{1,}a/g, "<mark>$&</mark>");
+            area.innerHTML = s.replace(/ab?a/g, "<mark>$&</mark>");
+            area.innerHTML = s.replace(/ab{0,1}a/g, "<mark>$&</mark>");
+            //숫자로시작하고, 영문자3글자이상 나오고, .마침표로 끝나는 문자열을 검사하는 정규식 작성
+            // true : 1abc안녕하세요. 3xyzkkk. 1ABC.
+            // false : 100 1cbㅋㅋㅋ. 아아아아.
+            const re = /^\d[a-z]{3,}.*\.$/gi;
+            area.innerHTML = "";
+            ["1abc안녕하세요.", "3xyzkkk.", "1ABC."].forEach(function(s){
+                area.innerHTML += s.replace(re, "<mark>$&</mark>");
+                area.innerHTML += "<br>";
+                console.log(re.test(s)); // true
+            });
+            ["100", "1cbㅋㅋㅋ.", "아아아아.", "1가나다abc.", "123abc다나가."].forEach(function(s){
+                area.innerHTML += s.replace(re, "<mark>$&</mark>");
+                area.innerHTML += "<br>";
+                console.log(re.test(s)); // false
+            });
+        }
+        function test13() {
+            /*
+                Look Around : 탐색
+                1. look ahead (전방 탐색)
+                 - 000(?=(re)) : 000 다음 re와 일치하는 패턴을 검색
+                 - 최종 반환되는 패턴은 000만 반환
+                 - 000(?!(re)) : 000 다음 re와 일치하지 않는 패턴 검색
+
+                2. look behind (후방 탐색)
+                 - (?<=(re))000 : 000 앞에 re와 일치하는 요소를 반환
+                 - (?<!(re))000 : 000 앞에 re와 일치하는 않는 요소를 반환
+            */
+            const s = "hello world hello tom hello Jane";
+            // hello 뒤에 world가 들어간 hello만 탐색
+            area.innerHTML = s.replace(/hello(?=( world))/g, "<mark>$&</mark>");
+            area.innerHTML = s.replace(/hello(?!( world))/g, "<mark>$&</mark>");
+
+            const s2 = "hello world lotte world t world";
+            // world 앞에 hello가 들어간 world만 탐색
+            area.innerHTML = s2.replace(/(?<=(hello ))world/g, "<mark>$&</mark>");
+            area.innerHTML = s2.replace(/(?<!(hello ))world/g, "<mark>$&</mark>");
         }
     </script>
 </body>
