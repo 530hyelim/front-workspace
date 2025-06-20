@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이벤트</title>
+    <script src="./resources/jquery_3.7.1.js"></script>
+</head>
+<body>
+    <h1>이벤트 연결 방법 종류</h1>
+    <h3>* 1. 이벤트 메서드를 통한 연결</h3>
+    <h4 id="test1">여길 클릭하세요</h4>
+    <script>
+        $(function() {
+            $("#test1").click(function() {
+                // this : 클릭당한 요소 (타깃)
+                $(this).html("여길 더블클릭 하세요");
+            });
+            $("#test1").dblclick(function() {
+                $(this).html("여길 트리플클릭 하세요");
+            });
+        });
+    </script>
+    <br>
+    <h3>* 2. on 메서드를 이용한 연결</h3>
+    <p>
+        $("선택자").on("이벤트명", 이벤트핸들러) <br>
+        - 반환형이 자기자신이기 때문에 메서드체이닝 가능
+    </p>
+    <h4 id="test2">여기 마우스를 올려보세요</h4>
+    <script>
+        $(function() {
+            $("#test2").on("mouseenter", function() {
+                $(this).css("backgroundColor","yellowgreen")
+                    .text("여길 클릭해보세요");
+            })
+            .on("click", function() {
+                // 이벤트 제거 메서드 .off(이벤트명)
+                $(this).off("mouseenter").css("backgroundColor","orangered")
+                    .text("이벤트가 제거됨"); // on 하려면 다시 추가해주어야 함
+            });
+        });
+    </script>
+    <br>
+    <h3>* 3. 세 번째 방법</h3>
+    <p>
+        on 메서드의 추가적인 응용 <br>
+        $("상위요소 선택자").on("이벤트명", "하위요소 선택자", 이벤트핸들러)
+    </p>
+    <div id="wrap">
+        <h4>h4입니다. 저를 클릭해주세요</h4>
+        <h5>h5입니다. 저를 클릭해주세요</h5>
+    </div>
+    <script>
+        $(function() {
+            $("#wrap h4").on("click", function() {
+                $(this).html("절 클릭해주셔서 감사합니다.");
+            });
+            // 위 이벤트 적용방식과 기능은 동일하나, 이벤트 적용대상이 다르다.
+            // 부모요소의 wrap에 이벤트 추가
+            $("#wrap").on("click","h4",function() {
+                // this가 클릭이벤트가 발생한 요소이지 wrap이 아님
+                // 왜지? 동시적용?????
+                $(this).html("ㄳㄳ");
+                // 이벤트에는 캡쳐링, 타깃선정, 버블링 단계가 있음
+                // 버블링 단계에서 "이벤트 위임" 처리가 됨
+            });
+            // 효과는 같아서 동일한 것처럼 보이지만 이벤트가 부여된 대상이 다름
+            // 2번방식은 wrap 이라는 상위요소에 이벤트가 부여되는 것
+            // 주 사용처 : 자식요소들이 동적으로 마구마구 생성될 때, 부모요소에
+            // 이벤트를 걸어두면 새롭게 생성되는 자식에 직접 추가해주지 않아도
+            // 동일한 이벤트를 가질 수 있게 할 수 있음
+        });
+    </script>
+    <br>
+    <h3>* 동적으로 생성된 요소에 이벤트 부여하기</h3>
+    <div id="wrap2" style="border: 1px solid red">
+        <h6>기존에 정적으로 존재하는 요소</h6>
+    </div>
+    <script>
+        $(function() {
+            $("#wrap2>h6").click(function() {
+                //$("#wrap2").append("<h6>동적으로 생성된 요소</h6>");
+                // 이 방식으로는 동적으로 생성된 요소에 이벤트 추가가 안 됨
+                
+            });
+            $("#wrap2 h6").on("click", function() {
+                //$("#wrap2").append("<h6>동적으로 생성된 요소</h6>");
+                // 마찬가지로 처음 html이 로딩 되었을때 존재하는 h6 요소에만
+                // 이벤트가 추가됨
+                // jQuery 요소로 생성을 하고 미리 클릭이벤트를 걸어놓고
+                // append하면 가능하긴 한데 번거롭고 코드 중복
+            });
+            $("#wrap2").on("click","h6",function() {
+                $("#wrap2").append("<h6>동적으로 생성된 요소</h6>");
+                // 동적으로 생성된 요소에 직접 이벤트 추가하지 않고 이벤트 위임
+                // 처리해주는 on 기능을 이용해서 일괄적으로 동일한 이벤트를
+                // 적용시킬 수 있음
+            });
+        });
+    </script>
+    <br>
+    <h3>* 일회성 이벤트</h3>
+    <h6 id="test3">딱 한 번만 실행됩니다.</h6>
+    <script>
+        $(function() {
+            $("#test3").one("click",function() {
+                $(this).html("이벤트 끝났습니다..");
+                console.log("이벤트 발생");
+            });
+        });
+    </script>
+</body>
+</html>

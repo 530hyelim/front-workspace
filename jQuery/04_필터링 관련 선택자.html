@@ -68,5 +68,47 @@
             $("h4")[2].innerText = "js객체"; // js element
         });
     </script>
+    <h3>* 필터링과 관련된 유용한 선택자들</h3>
+    <div class="wrapper">
+        <p>안녕1</p>
+        <p>안녕2</p>
+        <p>안녕3</p>
+        <p>안녕4</p>
+        <p>안녕5</p>
+        <p>안녕6</p>
+        <p><a href="#">안녕7</a></p>
+        <p>안녕8</p>
+        <p>안녕9</p>
+        <p>안녕10</p>
+    </div>
+    <input type="button" value=":eq()" onclick="test2();">
+    <input type="button" value=":gt() :lt()" onclick="test3();">
+    <input type="button" value=":contains()" onclick="test4();">
+    <input type="button" value=":has()" onclick="test5();">
+    <input type="button" value=":not()" onclick="test6();">
+    <script>
+        function test2() {
+            $(".wrapper p:eq(2)").css("color","deeppink"); 
+            // == $(".wrapper p").eq(2)
+        }
+        function test3() {
+            // gt(index) lt(index)
+            $(".wrapper p:gt(2)").css("font-size","2em");
+            $(".wrapper p:lt(2)").css("font-size","2em");
+        }
+        function test4() {
+            // :contains()
+            //  - 특정 문자를 가진 태그를 조회
+            $(".wrapper p:contains('안녕8')").css('text-decoration','line-through');
+            // 쌍따옴표 중첩으로 사용 불가
+        }
+        function test5() {
+            // :has(selector)
+            $(".wrapper p:has('a')").css("backgroundColor","pink");
+        }
+        function test6() {
+            $(".wrapper p:not(:first-child)").css("color","green");
+        }
+    </script>
 </body>
 </html>

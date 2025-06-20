@@ -64,11 +64,17 @@
             const content = document.querySelector("textarea[name=content]");
 
             // 게시글 제목과 내용 조건검사
-            if (title.value.length < 1 || content.value.length < 1) {
+            if (!(title.value && content.value)) {
                 return false;
             }
+            // 빈문자열은 false로 불린형변환 되기 때문 => undefined 아닌가???
+            // undefined.length는 왜 에러가 안났을까???????
+            // 아님. .value는 기본적으로 항상 문자열을 반환하도록 설계되어 있음
+            // 초기값이 빈 문자열이라는 뜻. 요소를 못찾은 경우에 null 반환해서
+            // .value 하면 에러가 날 수 있음
+            // 무언가 값이 입력되면 true로 형변환됨
 
-            // node 생성
+            // node 생성. li > h5{제목}, p{내용}
             const li = document.createElement("li");
             const h5 = document.createElement("h5");
             const p = document.createElement("p");
@@ -94,14 +100,33 @@
             const keyword = document.querySelector("input[name=search]");
             const boardList = document.querySelectorAll("#boardList>li");
             boardList.forEach(element => {
+                // 이렇게 하면 h5나 p가 포함되지 안하도 검색됨 (태그 때문에)
+                /*
                 if (!element.innerHTML.includes(keyword.value)) {
                     element.style.display = "none";
                 } else {
                     element.style.display = "block";
                 }
+                */
+            });
+            boardList.forEach(function(li) {
+                console.log(
+                    li.firstChild, // #text ("\n")
+                    li.lastChild, // #text ("\n")
+                    li.childNodes, // textnode(공백)도 포함해서 가져온다.
+                    li.children); // html 노드 데이터만 가져옴 [h5, p]
+                // li태그 내에서 내가 찾고자하는 요소 선택
+                const title = li.querySelector("h5").innerText;
+                // document.은 전체 문서에서 특정 요소 선택
+                const content = li.children[1].innerText; 
+                // 바뀔 수 있어서 쿼리셀렉터보다 약간 위험한 방식
+                if (title.includes(keyword.value) || content.includes(keyword.value)) {
+                    li.style.display = "block";
+                } else {
+                    li.style.display = "none";
+                }
             });
         }
-    
     </script>
 
     <h1>게시글 목록</h1>

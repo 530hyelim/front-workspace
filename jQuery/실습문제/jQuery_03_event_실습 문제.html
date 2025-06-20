@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>jQuery_04_event_실습</title>
+    <!--최신 jquery cdn 사용하기-->
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>  
+</head>
+<body>
+    <h2>Event 1</h2>
+    <script>
+        $(function() {
+            $("select").on("change", function() {
+                console.log("change detected");
+                const $selected = $(this).children().filter("option:selected");
+                $("#selNum").text($selected.text());
+            });
+        });
+    </script>
+    
+    <select name="number">
+        <option value="">== 선택 == </option>
+        <option value="1">1번</option>
+        <option value="2">2번</option>
+        <option value="3">3번</option>
+        <option value="4">4번</option>
+    </select>
+    <span id="selNum"></span>
+
+    <hr>
+
+    <h2>Event 2</h2>
+    <script>
+        $(function() {
+            // js에서도 addEventListener로 이벤트핸들러 함수 여러개 추가 가능
+            $("select").on("change", function() {
+                const $select = this.value;
+                const $event2 = $("#event2>tbody").children().not(":first");
+                $event2.each(function() {
+                    if ($(this).children().first().text() === $select) {
+                        $("#s1").text($select);
+                        $("#s2").text($(this).children().eq(1).text());
+                        $("#s3").text($(this).children().eq(2).text());
+                        $("#s4").text($(this).children().last().text());
+                    }
+                });
+            });
+        });
+    </script>
+    
+    <table id="event2" border="1">
+        <tr><th>번호</th><th>제목</th><th>조회수</th><th>작성일자</th></tr>
+        <tr><td>3</td><td>3번제목</td><td>0</td><td>11-07-13</td></tr>
+        <tr><td>2</td><td>2번제목</td><td>0</td><td>11-07-12</td></tr>
+        <tr><td>1</td><td>1번제목</td><td>0</td><td>11-07-11</td></tr>
+    </table>
+        선택된 행 :
+        <span id="s1"></span> / 
+        <span id="s2"></span> / 
+        <span id="s3"></span> / 
+        <span id="s4"></span>
+
+    <hr>
+    
+    <h2>Event 3</h2>
+    <script>
+    
+    </script>
+
+    <table id="event3" border="1">
+        <tr><th>번호</th><th>제목</th><th>조회수</th><th>작성일자</th></tr>
+        <tr><td>3</td><td>3번제목</td><td>0</td><td>11-07-13</td></tr>
+        <tr><td>2</td><td>2번제목</td><td>0</td><td>11-07-12</td></tr>
+        <tr><td>1</td><td>1번제목</td><td>0</td><td>11-07-11</td></tr>
+    </table>
+        선택된 행 :
+        <span id="s5"></span> / 
+        <span id="s6"></span> / 
+        <span id="s7"></span> / 
+        <span id="s8"></span>
+</body>
+</html>

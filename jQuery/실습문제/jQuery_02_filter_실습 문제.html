@@ -13,10 +13,16 @@
     <script>
         //체크한 체크박스의 value값들을 콘솔창에 출력
         function checkBtn(){
-            ($(":checkbox[value=1]:checked").val()) && console.log($(":checkbox[value=1]:checked").val());
-            ($(":checkbox[value=2]:checked").val()) && console.log($(":checkbox[value=2]:checked").val());
-            ($(":checkbox[value=3]:checked").val()) && console.log($(":checkbox[value=3]:checked").val());
-            ($(":checkbox[value=4]:checked").val()) && console.log($(":checkbox[value=4]:checked").val());
+            // ($(":checkbox[value=1]:checked").val()) && console.log($(":checkbox[value=1]:checked").val());
+            // ($(":checkbox[value=2]:checked").val()) && console.log($(":checkbox[value=2]:checked").val());
+            // ($(":checkbox[value=3]:checked").val()) && console.log($(":checkbox[value=3]:checked").val());
+            // ($(":checkbox[value=4]:checked").val()) && console.log($(":checkbox[value=4]:checked").val());
+            const $check = $(":checkbox").filter(":checked"); // jQuery 객체를 저장하는 변수라는 의미 (구분용)
+            console.log($check);
+            for (let i = 0; i < $check.length; i++) { // 향상된 of 반복문 사용 불가. in 쓰면 원하지 않는 속성 데이터
+                // 들도 함께 반복되기 때문에 일반 반복문이 가장 적절
+                console.log($check[i].value); // 일반반복문으로 꺼내는 순간 객체가 js element 형태가 됨(eq(i).val())
+            }
         }
     </script>
         
@@ -33,7 +39,9 @@
     <script>
         //선택한 select박스의 value값을 콘솔창에 출력
         function selectBtn(){
-            console.log($("select").val());
+            //console.log($("select").val());
+            const $select = $("select option").filter("option:selected");
+            console.log($select.val());
         }
     </script>
         
