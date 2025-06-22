@@ -66,7 +66,22 @@
     
     <h2>Event 3</h2>
     <script>
-    
+        $(function() {
+            $("select").on("change", function() {
+                const $select = this.value;
+                const $event3 = $("#event3>tbody").children().not(":first");
+                $event3.each(function() {
+                    $(this).children().css("backgroundColor","");
+                    if ($(this).children().first().text() === $select) {
+                        $(this).children().css("backgroundColor","red");
+                        $("#s5").text($select);
+                        $("#s6").text($(this).children().eq(1).text());
+                        $("#s7").text($(this).children().eq(2).text());
+                        $("#s8").text($(this).children().last().text());
+                    }
+                });
+            });
+        });
     </script>
 
     <table id="event3" border="1">

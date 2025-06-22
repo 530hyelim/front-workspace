@@ -12,6 +12,16 @@
     <h2>Method1</h2>
     <script>
         function add(){
+            const title = $(":text[name=title]").val();
+            const content = $(":text[name=content]").val();
+            const owner = $(":text[name=owner]").val();
+
+            const $title = $("<td></td>").text(title);
+            const $content = $("<td></td>").text(content);
+            const $owner = $("<td></td>").text(owner);
+
+            const tr = $("<tr></tr>").append($title, $content, $owner)
+            $("table").append(tr);
         }
         </script>
     
@@ -31,10 +41,20 @@
     <script>
         var idx = 0;
         function addFile(){
-            
+            const file = $(":file[name=f0]").clone();
+            file.removeAttr("name");
+            file.attr("name","f"+ ++idx);
+            $("div").append("<br>", file);
         }
         function delFile(){
             //input:file의 최소개수는 1개로 제한.
+            const input = $(":file");
+            input.each(function() {
+                $("div>br").remove();
+                if ($(this).attr("name") != "f0") {
+                    $(this).remove();
+                }
+            });
         }
         </script>
     
