@@ -20,8 +20,11 @@
             const $content = $("<td></td>").text(content);
             const $owner = $("<td></td>").text(owner);
 
-            const tr = $("<tr></tr>").append($title, $content, $owner)
-            $("table").append(tr);
+            const tr = $("<tr></tr>").append($title, $content, $owner).appendTo("table");
+            //$("table").append(tr); 자동으로 tbody 내부로 추가됨
+            $(":text[name=title]").val("");
+            $(":text[name=content]").val("");
+            $(":text[name=owner]").val("");
         }
         </script>
     
@@ -42,12 +45,17 @@
         var idx = 0;
         function addFile(){
             const file = $(":file[name=f0]").clone();
-            file.removeAttr("name");
+            // file.removeAttr("name");
             file.attr("name","f"+ ++idx);
-            $("div").append("<br>", file);
+            file.css("display","block");
+            //const clone = $("<div class='clone'></div>").append(file);
+            //$("div").append("<br>", file);
+            //$("div").not(".clone").append(clone);
+            $("div").append(file);
         }
         function delFile(){
             //input:file의 최소개수는 1개로 제한.
+            /*
             const input = $(":file");
             input.each(function() {
                 $("div>br").remove();
@@ -55,6 +63,10 @@
                     $(this).remove();
                 }
             });
+            */
+            $(":file").length > 1 && $(":file").last().remove() && --idx;
+            //$(":file").length > 1 && $(".clone").last().remove() && --idx;
+            //&& $("br").last().remove() && --idx;
         }
         </script>
     
