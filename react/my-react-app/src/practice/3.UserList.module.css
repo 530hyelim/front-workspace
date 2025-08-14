@@ -1,0 +1,20 @@
+.title-user {
+    color: #2c3e50;
+    font-size: 22px;
+    text-align: left;
+    margin-bottom: 12px;
+    border-bottom: 2px solid #2c3e50;
+}
+
+.user-list {
+    font-size: 18px;
+    margin-bottom: 8px;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* 나이 강조 */
+.age {
+    font-weight: bold;
+    color: #e67e22;
+}

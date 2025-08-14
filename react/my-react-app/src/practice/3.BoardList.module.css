@@ -1,0 +1,21 @@
+.title-board {
+    color: darkgreen;
+    font-size: 24px;
+    text-align: center;
+    background-color: #e0f2f1;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.board-list {
+    font-size: 18px;
+    margin-bottom: 8px;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* 작성자 스타일 */
+.writer {
+    font-style: italic;
+    color: #16a085;
+}
