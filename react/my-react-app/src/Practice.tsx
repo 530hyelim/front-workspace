@@ -2,6 +2,9 @@ import './App.css'
 import UserInfoContainer from './practice/1.PropsPractice'
 import BoardContainer from './practice/2.BoardContainer'
 import ModuleCssPractice from './practice/3.CssStyling'
+import AutoSaveEditor from './practice/4.UseEffectPractice'
+import PokemonSearch from './practice/5.AxiosPractice'
+import OptimizationPractice from './practice/5.OptimizationPractice'
 
 function Practice() {
     return (
@@ -13,7 +16,10 @@ function Practice() {
                 {/* 여기 아래에 실습문제들 추가. */}
                 {/* <UserInfoContainer /> */}
                 {/* <BoardContainer/> */}
-                <ModuleCssPractice/>
+                {/* <ModuleCssPractice/> */}
+                {/* <AutoSaveEditor/> */}
+                {/* <OptimizationPractice/> */}
+                <PokemonSearch/>
             </div>
         </>
     )

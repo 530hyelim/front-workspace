@@ -51,7 +51,7 @@ function BoardSearch({ list }: { list: typeof boardList }) {
                     // - 렌더링 성능향상을 위해 key값을 설정하세요
                     (result && result.length > 0) ? 
                         result.map( (found) => (
-                            <ul>
+                            <ul key={found.boardNo}>
                                 <li><b>번호:</b> {found.boardNo}</li>
                                 <li><b>제목:</b> {found.boardTitle}</li>
                                 <li><b>작성자:</b> {found.boardWriter}</li>
