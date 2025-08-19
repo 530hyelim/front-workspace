@@ -23,9 +23,9 @@ function OptimizationPractice() {
     //     단, filtered연산시 heavyFilter는 반드시 수행되어야 한다.
 
     //  2) 현재filtered는 컴포넌트가 렌더링 될때 마다 필터링 연산이 실행된다.
-    //    이를 최적화 하여 keyword가 변경되지 않는 한 불필요한 연산이 수행되지 않도록 최적화 하시오.
+    //    이를 최적화 하여 users, keyword가 변경되지 않는 한 불필요한 연산이 수행되지 않도록 최적화 하시오.
 
-    const filtered = useMemo(() => heavyFilter(users, keyword),[keyword]);
+    const filtered = useMemo(() => heavyFilter(users, keyword),[users, keyword]);
 
     const showCount = useCallback(() => {
         setKeyword(inputRef.current?.value ?? "");
