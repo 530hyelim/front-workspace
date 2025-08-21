@@ -10,6 +10,10 @@ const api = axios.create({
 //     //return response.data;
 //     return api.get<Menu[]>("/menus");
 // };
-export const searchMenus = async function({type, taste}:{type:string, taste:string}) {
+export const loadMenus = async function({type, taste}:{type:string, taste:string}) {
     return api.get<Menu[]>(`/menus?type=${type}&taste=${taste}`);
+};
+
+export const getMenus = (id:string | undefined) => {
+    return api.get<Menu>(`/menus/${id}`)
 };
