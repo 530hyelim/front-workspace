@@ -15,8 +15,14 @@ import { useState } from "react";
 import Header from './02_react_advanced/05_Router'
 import NestedRoute from './02_react_advanced/06_NestedRoute'
 import { UserDetail, UserList, VariableRoute } from './02_react_advanced/07_VariableRoute'
+import ContextApi from './03_global_state/1.context/Context'
+import Counter from './03_global_state/2.redux/pages/Counter'
+import { useSelector } from 'react-redux'
+import type { RootState } from './03_global_state/2.redux/store/store'
+import TodoList from './03_global_state/2.redux/pages/TodoList'
 
 function App() {
+  const counter = useSelector((state:RootState) => state.counter);
   return (
     <>
       {/* <Component/> */}
@@ -30,19 +36,23 @@ function App() {
       {/* <AxiosGet /> */}
       {/* <AxiosPost /> */}
       <Header />
+      현재 counter : {counter.value}
       <Routes>
         <Route path='/' element={<div>메인 페이지</div>} />
         <Route path='/useEffect' element={<UseEffectHook />} />
         <Route path='/optimize' element={<OptimizationHook />} />
-        <Route path='/nested' element={<NestedRoute/>}>
-          <Route path='get' element={<AxiosGet/>}/>
-          <Route path='post' element={<AxiosPost/>}/>
+        <Route path='/nested' element={<NestedRoute />}>
+          <Route path='get' element={<AxiosGet />} />
+          <Route path='post' element={<AxiosPost />} />
         </Route>
-        <Route path='/variable-route' element={<VariableRoute/>}>
+        <Route path='/variable-route' element={<VariableRoute />}>
           {/* 동적 자원경로(path variable) 설정 */}
-          <Route path='user/:id' element={<UserDetail/>}/>
-          <Route path='' element={<UserList/>}/>
+          <Route path='user/:id' element={<UserDetail />} />
+          <Route path='' element={<UserList />} />
         </Route>
+        <Route path='/context' element={<ContextApi />} />
+        <Route path='/counter' element={<Counter />} />
+        <Route path='/redux' element={<TodoList />} />
         {/* 순서 상 항상 맨 아래에 위치해야 함 */}
         <Route path="*" element={<div>
           <h1 style={{ color: 'red' }}>잘못된 페이지입니다.</h1>
@@ -75,6 +85,15 @@ function App() {
         </li>
         <li>
           <Link to="/variable-route">Variable Route</Link>
+        </li>
+        <li>
+          <Link to="/context">Context</Link>
+        </li>
+        <li>
+          <Link to="/counter">Counter</Link>
+        </li>
+        <li>
+          <Link to="/redux">Redux</Link>
         </li>
       </nav>
     </>

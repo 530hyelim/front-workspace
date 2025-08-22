@@ -29,17 +29,41 @@ const MenuEdit = () => {
             setMenus(data);
         }
     },[data]);
+    // 5. 유효성 검사 통과시 서버에 수정요청을 보낸다(useMutation 사용)
+    // 6. 수정 완료 후 상세 페이지로 이동시키고, 수정완료 메세지를 출력한다.
+    const queryClient = useQueryClient();
+    const mutation = useMutation({
+        mutationFn : (menu:MenuUpdate) => axios.put("http://localhost:8081/api/menus/"+id, menu),
+        onSuccess : () => {
+            queryClient.invalidateQueries({queryKey : ['menu', id]});
+            queryClient.invalidateQueries({queryKey : ['menus']});
+            navigate(`/menus/${id}`, {state:{flash:'메뉴 수정이 완료되었습니다.'}});
+        }
+    });
     // 4. 수정 버튼 클릭시 다음 내용에 대한 유효성 검사를 진행한다.
     //    - 모든 필드는 반드시 입력되어야 한다. 
     //    - price는 0이상 이어야 한다.
     //    - 유효성 검사 실패시 경고창(alert)을 통해 경고 메세지를 출력한다.
-    // 5. 유효성 검사 통과시 서버에 수정요청을 보낸다(useMutation 사용)
-    // 6. 수정 완료 후 상세 페이지로 이동시키고, 수정완료 메세지를 출력한다.
+    const updateMenu = (e:FormEvent) => {
+        e.preventDefault();
+        // 유효성 검사
+        if (menu.restaurant == '' || menu.name == '') {
+            alert('모든 필드를 입력하시요');
+            return;
+        }
+        mutation.mutate(menu);
+    }
     // 7. 중복 제출을 방지하기 위해 제출이 진행되는 동안은 버튼을 비활성화 시킨다.
     // 8. 제출이 진행되는 동안은 로딩 상태를 표시한다.
     //    - <div>Loading...</div>
+    if (mutation.isPending) {
+        return <div>제출중...</div>
+    }
     // 9. 수정 실패시 에러 메세지를 출력한다.
     //    - <div className="alert alert-danger">에러메세지</div>  
+    if (mutation.isError) {
+        return <div className="alert alert-danger">{mutation.error.message}</div>
+    }
     /*
     const {id} = useParams();
     const navigate = useNavigate();
@@ -61,7 +85,7 @@ const MenuEdit = () => {
         mutationFn : (newMenu:Menu) => axios.put("http://localhost:8081/api/menus/" + id, newMenu),
         onSuccess : (res) => {
             queryClient.invalidateQueries({queryKey:['menus']});
-            queryClient.invalidateQueries({queryKey:['menu', id]}); // 자료형 맞아야 함
+            queryClient.invalidateQueries({queryKey:['menu', id]}); // readonly unknown 배열이라 자료형 맞아야 함
             navigate(`/menus/${id}`, {
                 state : {flash : "수정완료"}
             });

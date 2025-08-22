@@ -21,6 +21,9 @@ const Header = () => {
                     <li className="nav-item">
                         <Link to="/menus/new" className="nav-link">메뉴 추가</Link>
                     </li>
+                    <li className="nav-item">
+                        <Link to="/login" className="nav-link">로그인</Link>
+                    </li>
                 </ul>
             </div>
         </div>

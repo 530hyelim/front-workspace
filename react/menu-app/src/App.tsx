@@ -5,6 +5,7 @@ import Header from './components/Header'
 import { MenuDetail } from './pages/2.MenuDetail'
 import MenuInput from './pages/3.MenuInsert'
 import MenuEdit from './pages/4.MenuEdit'
+import Login from './pages/login/Login'
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
               <Route path='new' element={<MenuInput/>} />
               <Route path=':id/edit' element={<MenuEdit/>} />
             </Route>
+            <Route path="/login" element={<Login/>} />
           </Routes>
         </div>
       </section>

@@ -1,43 +1,72 @@
 import { useEffect, useState } from "react"
 import type { Menu } from "../type/menu";
-import { loadMenus } from "../api/menuApi";
+import { loadMenus, searchMenus } from "../api/menuApi";
 import RadioGroup from "../components/RadioGroup";
 import useInput from "../hooks/useInput";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { QueryClient, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export default function MenuList() {
-    const [menus, setMenus] = useState<Menu[]>([]);
+    //const [menus, setMenus] = useState<Menu[]>([]);
     const navigate = useNavigate();
     // #3. 메뉴 검색 기능
     const [searchKeyword, onChangeKeyword] = useInput({
         type : 'all',
         taste : 'all'
     });
+    const [submittedKeyword, setSubmittedKeyword] = useState({
+        type : 'all',
+        taste : 'all'
+    });
+    const {data:menus, isLoading, isError, error} = useQuery<Menu[]>({
+        queryKey : ['menus', submittedKeyword],
+        queryFn : () => searchMenus(submittedKeyword),
+        // queryFn : () => axios.get("http://localhost:8081/api/menus", {
+        //     params : searchKeyword.type === 'all' && searchKeyword.taste === 'all' ? undefined : searchKeyword
+        // }).then(res => res.data),
+        staleTime : 1000 * 60
+    });
     // #1. 게시글 불러오기
     //  - useEffect를 활용하여 컴포넌트가 마운트 될 때 1번만 로드되도록 설정
-    useEffect(() => {
-        /*
-            #2. CORS 설정
-             - 브라우저는 보안상 SOP 정책을 사용한다
-             - SOP : 동일한 출처 (Origin)에서만 리소스 요청을 허용하는 정책
-             - 출처(Origin) : 프로토콜 + ip주소 + 포트번호
-             - 이 때 요청을 받는 서버측에서 현재 출처에 대한 요청을 허용하도록 CrossOrigin 속성을
-               추가해줘야 한다.
-        */
-        loadMenus(searchKeyword).then(response => {
-            setMenus(response.data);
-        });
-        //handleSearchMenus();
-    }, []);
+    // useEffect(() => {
+    //     /*
+    //         #2. CORS 설정
+    //          - 브라우저는 보안상 SOP 정책을 사용한다
+    //          - SOP : 동일한 출처 (Origin)에서만 리소스 요청을 허용하는 정책
+    //          - 출처(Origin) : 프로토콜 + ip주소 + 포트번호
+    //          - 이 때 요청을 받는 서버측에서 현재 출처에 대한 요청을 허용하도록 CrossOrigin 속성을
+    //            추가해줘야 한다.
+    //     */
+    //     loadMenus(searchKeyword).then(response => {
+    //         setMenus(response.data);
+    //     });
+    //     //handleSearchMenus();
+    // }, []);
     const handleSearchMenus = () => {
+        setSubmittedKeyword(searchKeyword);
         // loadMenus(searchKeyword).then(response => {
         //     setMenus(response.data);
         // });
+        /*
         axios.get("http://localhost:8081/api/menus", {
             params : searchKeyword
         }).then(res => setMenus(res.data));
+        */
     };
+    const queryClient = useQueryClient();
+    const deleteMenuMutation = useMutation({
+        mutationFn : (id:number) => axios.delete(`http://localhost:8081/api/menus/${id}`),
+        onSuccess : () => {
+            queryClient.invalidateQueries({queryKey:['menus', submittedKeyword]});
+            //queryClient.invalidateQueries({queryKey:['menu', id]});
+        }
+    });
+    const handleDelete = (id:number) => {
+        deleteMenuMutation.mutate(id);
+    };
+    if (isLoading) return <div>Loading...</div>;
+    if (isError) return <div className="alert alert-danger">{error.message}</div>
     return (
         <>
             <div className="menu-test">
@@ -98,7 +127,12 @@ export default function MenuList() {
                                                     navigate(`/menus/${menu.id}/edit`);
                                                 }
                                             }>수정</button>
-                                            <button className="btn">삭제</button>
+                                            <button className="btn" onClick={
+                                                (e) => {
+                                                    e.stopPropagation();
+                                                    handleDelete(menu.id);
+                                                }
+                                            }>삭제</button>
                                         </td>
                                     </tr>
                                 )
