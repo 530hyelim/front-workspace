@@ -5,6 +5,7 @@ import { initMenu, type Menu, type MenuUpdate } from "../type/menu";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import useInput from "../hooks/useInput";
+import { getMenu, updateMenu as updateMenuApi } from "../api/menuApi";
 
 const MenuEdit = () => {
     // #1. 메뉴 수정 기능 구현   
@@ -14,7 +15,7 @@ const MenuEdit = () => {
     // 1. 현재 메뉴 정보에 맞는 데이터를 서버에서 읽어온 후 , 폼에 바인딩한다.(useEffect+useQuery 사용)
     const {data, isLoading, isError, error} = useQuery<Menu>({
         queryKey : ['menu', id],
-        queryFn : () => axios.get("http://localhost:8081/api/menus/" + id).then(res => res.data),
+        queryFn : () => getMenu(Number(id)),
         staleTime : 1000 * 60
     });
     // 2. 읽어온 데이터가 없는 경우 목록 페이지로 이동시키고 "존재하지 않는 메뉴입니다." 메세지를 출력한다. 
@@ -33,7 +34,7 @@ const MenuEdit = () => {
     // 6. 수정 완료 후 상세 페이지로 이동시키고, 수정완료 메세지를 출력한다.
     const queryClient = useQueryClient();
     const mutation = useMutation({
-        mutationFn : (menu:MenuUpdate) => axios.put("http://localhost:8081/api/menus/"+id, menu),
+        mutationFn : (menu:MenuUpdate) => updateMenuApi(Number(id), menu),
         onSuccess : () => {
             queryClient.invalidateQueries({queryKey : ['menu', id]});
             queryClient.invalidateQueries({queryKey : ['menus']});

@@ -5,6 +5,7 @@ import { initMenu, type MenuCreate } from "../type/menu";
 import type { FormEvent } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import { createMenu } from "../api/menuApi";
 
 export default function MenuInput() {
     // #1. 메뉴 등록 기능
@@ -38,7 +39,7 @@ export default function MenuInput() {
     */
     const queryClient = useQueryClient();
     const mutation = useMutation({
-        mutationFn : (newMenu:MenuCreate) => axios.post("http://localhost:8081/api/menus", newMenu),
+        mutationFn : (newMenu:MenuCreate) => createMenu(newMenu),
         onSuccess : (res) => {
             // 등록 요청 성공 시
             queryClient.invalidateQueries({queryKey:['menus']}); // 메뉴 목록 데이터 캐시 무효화

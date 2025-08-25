@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { initMenu, type Menu } from "../type/menu";
 import { useParams } from "react-router-dom";
-import { getMenus } from "../api/menuApi";
+import { getMenu } from "../api/menuApi";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -77,7 +77,7 @@ export const MenuDetail = () => {
         // 조회결과에 데이터를 저장할 캐시메모리 별도로 설치해주어야 함. main.tsx 참고
         queryKey : ['menu', id], // 캐시 구분용 키
         // 서버 상태값을 얻어올 수 있는 코드 기술(호출X). 데이터 패치 함수 정의. 응답 상태는 data에 저장된다.
-        queryFn : () => axios.get(`http://localhost:8081/api/menus/${id}`).then(res => res.data),
+        queryFn : () => getMenu(Number(id)),
         staleTime : 1000 * 60, // 1분
         gcTime : 1000 * 60 * 5, // 5분. 가비지 컬렉션 타임. 캐시 메모리 저장 시간
         enabled : true // 초기 실행 여부. 최초 마운트 시 useEffect 훅으로 실행할건지 여부

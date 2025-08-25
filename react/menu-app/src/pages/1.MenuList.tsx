@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import type { Menu } from "../type/menu";
-import { loadMenus, searchMenus } from "../api/menuApi";
+import { deleteMenu, loadMenus, searchMenus } from "../api/menuApi";
 import RadioGroup from "../components/RadioGroup";
 import useInput from "../hooks/useInput";
 import axios from "axios";
@@ -56,7 +56,7 @@ export default function MenuList() {
     };
     const queryClient = useQueryClient();
     const deleteMenuMutation = useMutation({
-        mutationFn : (id:number) => axios.delete(`http://localhost:8081/api/menus/${id}`),
+        mutationFn : (id:number) => deleteMenu(id),
         onSuccess : () => {
             queryClient.invalidateQueries({queryKey:['menus', submittedKeyword]});
             //queryClient.invalidateQueries({queryKey:['menu', id]});
