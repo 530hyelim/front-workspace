@@ -1,6 +1,8 @@
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom"
 import type { RootState } from "../store/store";
+import { logout } from "../features/authSlice";
+import { api } from "../api/menuApi";
 
 /*
     #components
@@ -9,8 +11,15 @@ import type { RootState } from "../store/store";
 */
 const Header = () => {
     const auth = useSelector((state: RootState) => state.auth);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const handleLogout = () => {
-
+        // 프론트에서 자바스크립트로 쿠키에 저장된 리프레시 토큰 삭제 불가
+        api.post("/auth/logout")
+            .then(() => {
+                dispatch(logout());
+                navigate("/login");
+            });
     };
 
     return (

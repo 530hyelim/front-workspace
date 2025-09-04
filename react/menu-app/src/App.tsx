@@ -7,8 +7,23 @@ import MenuInput from './pages/3.MenuInsert'
 import MenuEdit from './pages/4.MenuEdit'
 import Login from './pages/login/Login'
 import ProtectedRoute from './components/ProtectedRoute'
+import { useEffect } from 'react'
+import { api } from './api/menuApi'
+import { useDispatch } from 'react-redux'
+import { loginSuccess, logout } from './features/authSlice'
+import OAuth2Success from './pages/login/OAuth2Success'
 
 function App() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    api.post("/auth/refresh")
+      .then(res => { // 쿠키에 리프레시 토큰 있으면 성공
+        dispatch(loginSuccess(res.data)); 
+      })
+      .catch(err => { // 없으면 로그아웃
+        dispatch(logout());
+      })
+  },[]);
   return (
     <div id="container">
       <Header />
@@ -38,7 +53,8 @@ function App() {
             </Route>
             <Route path="/login" element={<Login />} />
             <Route path="/unauthorized" element={<div>권한이 없습니다</div>} />
-            <Route path="/*" element={<div>404</div>} />
+            <Route path="/oauth2/success" element={<OAuth2Success />} />
+            <Route path="/*" element={<div></div>} />
           </Routes>
         </div>
       </section>

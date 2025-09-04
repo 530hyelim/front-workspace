@@ -4,6 +4,7 @@ import styles from './Login.module.css'
 import axios, { AxiosError } from "axios";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../../features/authSlice";
+import { api } from "../../api/menuApi";
 
 export default function Login() {
     // 입력 상태
@@ -24,9 +25,8 @@ export default function Login() {
         }
         setLoading(true);
         setError(""); // useQuery? 로그인데이터 캐싱할 필요 없어서 안씀
-        axios.post("http://localhost:8081/api/auth/login", {email, password})
+        api.post("/auth/login", {email, password})
             .then(res => {
-                console.log(res);
                 /*
                     #1. JWT 저장위치
                      - JWT 토큰은 클라이언트의 브라우저에서 관리해야하는 데이터이며, 
@@ -75,6 +75,7 @@ export default function Login() {
                 navigate("/home", {state: {flash: "로그인 성공"}});
             })
             .catch((err:AxiosError) => {
+                console.log(err)
                 if (err.response?.status === 404) {
                     const doSignUp = confirm("등록된 계정이 없습니다. 현재 입력한 이메일과"
                                     + " 비민번호로 회원가입 할까요?");
@@ -84,7 +85,7 @@ export default function Login() {
                         return;
                     }
                     // 자동 회원가입 요청
-                    axios.post("http://localhost:8081/api/auth/signup", {email, password})
+                    api.post("/auth/signup", {email, password})
                         .then(res => {
                             console.log(res);
                             dispatch(loginSuccess(res.data));
@@ -108,6 +109,10 @@ export default function Login() {
     };
     // 소셜 로그인은 백엔드 OAuth 엔드포인트로 리다이렉트
     const handleKakaoLogin = () => {
+        // 카카오 인증서버 경로
+        location.href = "http://localhost:8081/api/oauth2/authorization/kakao";
+        // 시큐리티 안쓰면 컨트롤러에 uri 경로 매핑된 메서드 만들어서 직접 요청해야함
+        // 리다이렉트 uri properties 파일에 있는거 쿼리스트링으로 이어져서 요청됨
     };
     const handleNaverLogin = () => {
     };
